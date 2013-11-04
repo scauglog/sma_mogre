@@ -1,0 +1,7 @@
+C:\Users\helly\Documents\robotique_enseirb\mogre\Leclech_Sagean\bin\Debug\Tutorial.exe.config
+C:\Users\helly\Documents\robotique_enseirb\mogre\Leclech_Sagean\bin\Debug\Tutorial.exe
+C:\Users\helly\Documents\robotique_enseirb\mogre\Leclech_Sagean\bin\Debug\Tutorial.pdb
+C:\Users\helly\Documents\robotique_enseirb\mogre\Leclech_Sagean\bin\Debug\Mogre.xml
+C:\Users\helly\Documents\robotique_enseirb\mogre\Leclech_Sagean\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\helly\Documents\robotique_enseirb\mogre\Leclech_Sagean\obj\x86\Debug\Tutorial.exe
+C:\Users\helly\Documents\robotique_enseirb\mogre\Leclech_Sagean\obj\x86\Debug\Tutorial.pdb
