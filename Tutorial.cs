@@ -1,6 +1,9 @@
 ﻿using Mogre;
 using Mogre.TutorialFramework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 
 
@@ -114,8 +117,8 @@ namespace Mogre.Tutorials
         protected static float mTimer = 50;
         protected static SceneManager mSceneMgr;
         protected static Camera mCamera;
-        protected static CameraMan mCameraMan; 
-
+        protected static CameraMan mCameraMan;
+        
         public static void Main()
         {
             new MoveDemo().Go();
@@ -204,69 +207,71 @@ namespace Mogre.Tutorials
 
         protected virtual void CreateScene()
         {
-            //shadow
             mSceneMgr = mRoot.CreateSceneManager(SceneType.ST_GENERIC);
-            mSceneMgr.AmbientLight = ColourValue.Black;
-            mSceneMgr.ShadowTechnique = ShadowTechnique.SHADOWTYPE_STENCIL_ADDITIVE;
 
-            // Pitch is rotation around the x axis, 
-            // yaw is around the y axis
-            // roll is around the z axis.
+            Environment env = new Environment(ref mSceneMgr);
+            
+            //mSceneMgr.AmbientLight = ColourValue.Black;
+            //mSceneMgr.ShadowTechnique = ShadowTechnique.SHADOWTYPE_STENCIL_ADDITIVE;
 
-            //mSceneMgr.AmbientLight = new ColourValue(1, 1, 1);
-            ///Entity ent = mSceneMgr.CreateEntity("Head", "ninja.mesh");
-            //ent.CastShadows = true;
-            //SceneNode node = mSceneMgr.RootSceneNode.CreateChildSceneNode("HeadNode");
-            //node.AttachObject(ent);
-            //node.Scale(0.5f,0.5f, 0.5f);
-            //node.Yaw(new Degree(-45));
-            //node.Pitch(new Degree(-45));
-            //node.Roll(new Degree(45));
+            //// Pitch is rotation around the x axis, 
+            //// yaw is around the y axis
+            //// roll is around the z axis.
 
-            Ninja n = new Ninja(mSceneMgr, Vector3.ZERO);
+            ////mSceneMgr.AmbientLight = new ColourValue(1, 1, 1);
+            /////Entity ent = mSceneMgr.CreateEntity("Head", "ninja.mesh");
+            ////ent.CastShadows = true;
+            ////SceneNode node = mSceneMgr.RootSceneNode.CreateChildSceneNode("HeadNode");
+            ////node.AttachObject(ent);
+            ////node.Scale(0.5f,0.5f, 0.5f);
+            ////node.Yaw(new Degree(-45));
+            ////node.Pitch(new Degree(-45));
+            ////node.Roll(new Degree(45));
 
-            //Entity ent3 = mSceneMgr.CreateEntity("Head3", "ninja.mesh");
-            //ent3.CastShadows = true;
-            //SceneNode node3 = mSceneMgr.RootSceneNode.CreateChildSceneNode("HeadNode3", new Vector3(100, 00, 0));
-            //node3.AttachObject(ent3);
-            //node3.Scale(0.5f, 0.5f, 0.5f);
+            //Ninja n = new Ninja(ref mSceneMgr, Vector3.ZERO);
 
-            //node2.Position += new Vector3(10, 0, 10);
+            ////Entity ent3 = mSceneMgr.CreateEntity("Head3", "ninja.mesh");
+            ////ent3.CastShadows = true;
+            ////SceneNode node3 = mSceneMgr.RootSceneNode.CreateChildSceneNode("HeadNode3", new Vector3(100, 00, 0));
+            ////node3.AttachObject(ent3);
+            ////node3.Scale(0.5f, 0.5f, 0.5f);
 
-            //create ground
-            Plane plane = new Plane(Vector3.UNIT_Y, 0);
+            ////node2.Position += new Vector3(10, 0, 10);
 
-            MeshManager.Singleton.CreatePlane("ground",
-                ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, plane,
-                1500, 1500, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
+            ////create ground
+            //Plane plane = new Plane(Vector3.UNIT_Y, 0);
 
-            Entity groundEnt = mSceneMgr.CreateEntity("GroundEntity", "ground");
-            mSceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(groundEnt);
+            //MeshManager.Singleton.CreatePlane("ground",
+            //    ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, plane,
+            //    1500, 1500, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
 
-            groundEnt.SetMaterialName("Examples/Rockwall");
-            groundEnt.CastShadows = false;
+            //Entity groundEnt = mSceneMgr.CreateEntity("GroundEntity", "ground");
+            //mSceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(groundEnt);
 
-            //ligth
-            Light pointLight = mSceneMgr.CreateLight("pointLight");
-            pointLight.Type = Light.LightTypes.LT_POINT;
-            pointLight.Position = new Vector3(0, 150, 250);
-            pointLight.DiffuseColour = ColourValue.Red;
-            pointLight.SpecularColour = ColourValue.Red;
+            //groundEnt.SetMaterialName("Examples/Rockwall");
+            //groundEnt.CastShadows = false;
 
-            Light directionalLight = mSceneMgr.CreateLight("directionalLight");
-            directionalLight.Type = Light.LightTypes.LT_DIRECTIONAL;
-            directionalLight.DiffuseColour = new ColourValue(.25f, .25f, 0);
-            directionalLight.SpecularColour = new ColourValue(.25f, .25f, 0);
-            directionalLight.Direction = new Vector3(0, -1, 1);
+            ////ligth
+            //Light pointLight = mSceneMgr.CreateLight("pointLight");
+            //pointLight.Type = Light.LightTypes.LT_POINT;
+            //pointLight.Position = new Vector3(0, 150, 250);
+            //pointLight.DiffuseColour = ColourValue.Red;
+            //pointLight.SpecularColour = ColourValue.Red;
 
-            Light spotLight = mSceneMgr.CreateLight("spotLight");
-            spotLight.Type = Light.LightTypes.LT_SPOTLIGHT;
-            spotLight.DiffuseColour = ColourValue.Blue;
-            spotLight.SpecularColour = ColourValue.Blue;
-            spotLight.Direction = new Vector3(-1, -1, 0);
-            spotLight.Position = new Vector3(300, 300, 0);
+            //Light directionalLight = mSceneMgr.CreateLight("directionalLight");
+            //directionalLight.Type = Light.LightTypes.LT_DIRECTIONAL;
+            //directionalLight.DiffuseColour = new ColourValue(.25f, .25f, 0);
+            //directionalLight.SpecularColour = new ColourValue(.25f, .25f, 0);
+            //directionalLight.Direction = new Vector3(0, -1, 1);
 
-            spotLight.SetSpotlightRange(new Degree(35), new Degree(50));
+            //Light spotLight = mSceneMgr.CreateLight("spotLight");
+            //spotLight.Type = Light.LightTypes.LT_SPOTLIGHT;
+            //spotLight.DiffuseColour = ColourValue.Blue;
+            //spotLight.SpecularColour = ColourValue.Blue;
+            //spotLight.Direction = new Vector3(-1, -1, 0);
+            //spotLight.Position = new Vector3(300, 300, 0);
+
+            //spotLight.SetSpotlightRange(new Degree(35), new Degree(50));
         }
 
         protected void CreateCamera()
@@ -292,6 +297,7 @@ namespace Mogre.Tutorials
         protected virtual void CreateFrameListeners()
         {
             mRoot.FrameRenderingQueued += new FrameListener.FrameRenderingQueuedHandler(OnFrameRenderingQueued);
+            mRoot.FrameStarted += new FrameListener.FrameStartedHandler(FrameStarted);
         }
 
         static bool OnFrameRenderingQueued(FrameEvent evt)
@@ -303,6 +309,12 @@ namespace Mogre.Tutorials
         protected void EnterRenderLoop()
         {
             mRoot.StartRendering();
+        }
+
+        bool FrameStarted(FrameEvent evt)
+        {
+            
+            return true;
         }
 
         

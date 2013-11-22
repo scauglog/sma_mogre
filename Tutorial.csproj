@@ -50,6 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="Environment.cs" />
     <Compile Include="MoveDemo.cs" />
     <Compile Include="Ninja.cs" />
     <Compile Include="SpaceMarine.cs" />

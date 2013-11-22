@@ -9,16 +9,17 @@ namespace Mogre.Tutorials
 {
     class Ninja : Character
     {
-        public Ninja(SceneManager mSceneMgr, Vector3 position)
+        public Ninja(ref SceneManager mSceneMgr, Vector3 position)
         {
-            Entity ent = mSceneMgr.CreateEntity("Ninja"+count.ToString(), "ninja.mesh");
+            ent = mSceneMgr.CreateEntity("Ninja"+count.ToString(), "ninja.mesh");
             ent.CastShadows = true;
-            SceneNode node = mSceneMgr.RootSceneNode.CreateChildSceneNode("NinjaNode");
+            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("NinjaNode" + count.ToString());
             node.AttachObject(ent);
             node.Scale(0.5f, 0.5f, 0.5f);
-            count++;
+            name=count++.ToString();
+            mWalkSpeed = 50.0f;
         }
         protected override void destroy() { }
-        protected override void move() { }
+        protected override void move(FrameEvent evt) { }
     }
 }

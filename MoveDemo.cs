@@ -17,42 +17,42 @@ namespace Mogre.Tutorials
         LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
         float mWalkSpeed = 50.0f;  // The speed at which the object is moving
         bool mWalking;
-
+        
 
         protected override void CreateScene()
         {
             // Create SceneManager
             mSceneMgr = mRoot.CreateSceneManager(SceneType.ST_EXTERIOR_CLOSE);
-
-            //Set ambient light
-            mSceneMgr.AmbientLight = ColourValue.White;
+            Environment env = new Environment(ref mSceneMgr);
+            ////Set ambient light
+            //mSceneMgr.AmbientLight = ColourValue.White;
 
             // Create the Robot entity
             Entity ent = mSceneMgr.CreateEntity("Robot", "robot.mesh");
 
-            // Create the Robot's SceneNode
+            //// Create the Robot's SceneNode
             SceneNode node = mSceneMgr.RootSceneNode.CreateChildSceneNode("RobotNode",
                              new Vector3(0.0f, 0.0f, 0.25f));
             node.AttachObject(ent);
 
             // Create knot objects so we can see movement
-            ent = mSceneMgr.CreateEntity("Knot1", "knot.mesh");
-            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("Knot1Node",
-                new Vector3(0.0f, -10.0f, 25.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = mSceneMgr.CreateEntity("Knot2", "knot.mesh");
-            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("Knot2Node",
-                new Vector3(550.0f, -10.0f, 50.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = mSceneMgr.CreateEntity("Knot3", "knot.mesh");
-            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("Knot3Node",
-                new Vector3(-100.0f, -10.0f, -200.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
+            //ent = mSceneMgr.CreateEntity("Knot1", "knot.mesh");
+            //node = mSceneMgr.RootSceneNode.CreateChildSceneNode("Knot1Node",
+            //    new Vector3(0.0f, -10.0f, 25.0f));
+            //node.AttachObject(ent);
+            //node.Scale(0.1f, 0.1f, 0.1f);
+            ////
+            //ent = mSceneMgr.CreateEntity("Knot2", "knot.mesh");
+            //node = mSceneMgr.RootSceneNode.CreateChildSceneNode("Knot2Node",
+            //    new Vector3(550.0f, -10.0f, 50.0f));
+            //node.AttachObject(ent);
+            //node.Scale(0.1f, 0.1f, 0.1f);
+            ////
+            //ent = mSceneMgr.CreateEntity("Knot3", "knot.mesh");
+            //node = mSceneMgr.RootSceneNode.CreateChildSceneNode("Knot3Node",
+            //    new Vector3(-100.0f, -10.0f, -200.0f));
+            //node.AttachObject(ent);
+            //node.Scale(0.1f, 0.1f, 0.1f);
 
             // Create the walking list
             mWalkList = new LinkedList<Vector3>();
