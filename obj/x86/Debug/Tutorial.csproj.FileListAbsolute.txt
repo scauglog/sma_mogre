@@ -12,3 +12,10 @@ C:\Users\helly\Google Drive\ENSEIRB\mogre\Leclech_Sagean\bin\Debug\Tutorial.exe
 C:\Users\helly\Google Drive\ENSEIRB\mogre\Leclech_Sagean\bin\Debug\Tutorial.pdb
 C:\Users\helly\Google Drive\ENSEIRB\mogre\Leclech_Sagean\bin\Debug\Mogre.xml
 C:\Users\helly\Google Drive\ENSEIRB\mogre\Leclech_Sagean\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Louis\Source\Repos\sma_mogre\bin\Debug\Tutorial.exe.config
+C:\Users\Louis\Source\Repos\sma_mogre\obj\x86\Debug\Tutorial.exe
+C:\Users\Louis\Source\Repos\sma_mogre\obj\x86\Debug\Tutorial.pdb
+C:\Users\Louis\Source\Repos\sma_mogre\bin\Debug\Tutorial.exe
+C:\Users\Louis\Source\Repos\sma_mogre\bin\Debug\Tutorial.pdb
+C:\Users\Louis\Source\Repos\sma_mogre\bin\Debug\Mogre.xml
+C:\Users\Louis\Source\Repos\sma_mogre\obj\x86\Debug\Tutorial.csprojResolveAssemblyReference.cache
