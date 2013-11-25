@@ -10,9 +10,12 @@ namespace Mogre.Tutorials
     class Environment
     {
         private List<Character> characters;
+        private int MAX_X;
+        private int MAX_Z;
 
         public Environment(ref SceneManager mSceneMgr)
         {
+
             mSceneMgr.AmbientLight = ColourValue.Black;
             mSceneMgr.ShadowTechnique = ShadowTechnique.SHADOWTYPE_STENCIL_ADDITIVE;
             
@@ -29,9 +32,11 @@ namespace Mogre.Tutorials
         {
             Plane plane = new Plane(Vector3.UNIT_Y, 0);
 
+            MAX_X = 500;
+            MAX_Z = 500;
             MeshManager.Singleton.CreatePlane("ground",
                 ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, plane,
-                1500, 1500, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
+                MAX_X, MAX_Z, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
 
             Entity groundEnt = mSceneMgr.CreateEntity("GroundEntity", "ground");
             mSceneMgr.RootSceneNode.CreateChildSceneNode().AttachObject(groundEnt);
@@ -67,6 +72,21 @@ namespace Mogre.Tutorials
 
         private void createCastle(ref SceneManager mSceneMgr)
         { 
+        }
+
+        public void moveCharacters(FrameEvent evt)  {
+            foreach (Character c in characters)
+            {
+                c.move(evt, this);
+            }
+        }
+
+        public bool outOfGround(Vector3 characterPosition)
+        {
+            if (characterPosition.x > MAX_X / 2 || characterPosition.x > MAX_Z / 2 || characterPosition.x < -MAX_X / 2 || characterPosition.x < -MAX_Z / 2)
+                return true;
+            else
+                return false;
         }
     }
 }
