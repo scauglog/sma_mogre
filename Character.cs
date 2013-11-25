@@ -10,7 +10,7 @@ namespace Mogre.Tutorials
     abstract class Character
     {
 
-
+        protected Vector3 lastPosition; 
         protected Entity ent;
         protected SceneNode node;
         protected string name;

@@ -24,6 +24,7 @@ namespace Mogre.Tutorials
             mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
             mWalkList.AddLast(new Vector3(-100.0f, 0.0f, -200.0f));
             mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
+            lastPosition = position;
         }
         protected override void destroy() { }
         protected bool nextLocation()
@@ -40,6 +41,7 @@ namespace Mogre.Tutorials
                 //check if there are places to go
                 if (nextLocation())
                 {
+                    
                     LinkedListNode<Vector3> tmp;
 
                     //Start the walk animation
@@ -51,6 +53,7 @@ namespace Mogre.Tutorials
                     //Update the destination using the walklist.
                     mDestination = mWalkList.First.Value; //get the next destination.
                     tmp = mWalkList.First; //save the node that held it
+                    Console.WriteLine(tmp.Value.x);
                     mWalkList.RemoveFirst(); //remove that node from the front of the list
                     mWalkList.AddLast(tmp);  //add it to the back of the list.
 
@@ -68,6 +71,7 @@ namespace Mogre.Tutorials
             }
             else //we're in motion
             {
+               
                 //determine how far to move this frame
                 float move = mWalkSpeed * evt.timeSinceLastFrame;
                 mDistance -= move;
@@ -75,12 +79,14 @@ namespace Mogre.Tutorials
                 if (mDistance <= 0.0f || env.outOfGround(node.Position))
                 {
                     //set our node to the destination we've just reached & reset direction to 0
-                    node.Position=mDestination;
+                    node.Position=lastPosition;
                     mDirection = Vector3.ZERO;
                     mWalking = false;
+
                 }//if(mDistance <= 0.0f)
                 else
                 {
+                    lastPosition = node.Position;
                     //Rotation code goes here
                     Vector3 src = node.Orientation * Vector3.UNIT_X;
                     if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
