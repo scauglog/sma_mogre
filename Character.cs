@@ -18,14 +18,30 @@ namespace Mogre.Tutorials
         protected float mDistance = 0.0f; 
         protected Vector3 mDirection = Vector3.ZERO;   // The direction the object is moving
         protected Vector3 mDestination = Vector3.ZERO; // The destination the object is moving towards
+        protected Vector3 forward;
+        protected float viewingAngle;
         protected LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
         protected float mWalkSpeed = 50.0f;  // The speed at which the object is moving
         protected bool mWalking;
+        protected int maxView;
+        public SceneNode Node
+        {
+            get { return node; }
+        }
 
+        public Vector3 Forward
+        {
+            get { return forward; }
+        }
+        public float ViewingAngle
+        {
+            get { return viewingAngle; }
+        }
 
         protected static int count=1;
         abstract protected void destroy();
         abstract public void move(FrameEvent evt, Environment env);
-
+        
+        
     }
 }

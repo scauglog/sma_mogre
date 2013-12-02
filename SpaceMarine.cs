@@ -21,10 +21,14 @@ namespace Mogre.Tutorials
             mAnimationState.Loop = true;
             mAnimationState.Enabled = true;
             mWalkList = new LinkedList<Vector3>();
-            mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
-            mWalkList.AddLast(new Vector3(-100.0f, 0.0f, -200.0f));
-            mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
+            //mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
+            //mWalkList.AddLast(new Vector3(-100.0f, 0.0f, -200.0f));
+            //mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
             lastPosition = position;
+            forward = Vector3.UNIT_X;
+            viewingAngle = 0.9f;
+            maxView = 3000;
+            
         }
         protected override void destroy() { }
         protected bool nextLocation()
@@ -33,82 +37,86 @@ namespace Mogre.Tutorials
                 return false;
             return true;
         }
+
+        private bool findTarget(Environment env)
+        {
+            List<Character> listchar = env.look(this);
+            double minDist=maxView;
+            Vector3 position = Vector3.ZERO;
+            foreach (Character c in listchar)
+            {
+                double dist = (c.Node.Position - this.Node.Position).Length;
+                if (minDist > dist)
+                {
+                    minDist = dist;
+                    position = c.Node.Position;
+                }
+
+            }
+            if (position!=Vector3.ZERO)
+            {
+                if(mWalkList.Count!=0)
+                    mWalkList.RemoveFirst();
+                mWalkList.AddFirst(position);
+                return true;
+            }
+
+            return false;
+        }
+
         public override void move(FrameEvent evt, Environment env)
         {
+            findTarget(env);
             if (!mWalking)
-            //either we've not started walking or reached a way point
             {
-                //check if there are places to go
-                if (nextLocation())
-                {
-                    
-                    LinkedListNode<Vector3> tmp;
-
-                    //Start the walk animation
-                    mAnimationState = ent.GetAnimationState("Walk");
-                    mAnimationState.Loop = true;
-                    mAnimationState.Enabled = true;
-                    mWalking = true;
-
-                    //Update the destination using the walklist.
-                    mDestination = mWalkList.First.Value; //get the next destination.
-                    tmp = mWalkList.First; //save the node that held it
-                    Console.WriteLine(tmp.Value.x);
-                    mWalkList.RemoveFirst(); //remove that node from the front of the list
-                    mWalkList.AddLast(tmp);  //add it to the back of the list.
-
-                    //update the direction and the distance
-                    mDirection = mDestination - node.Position;
-                    mDistance = mDirection.Normalise();
-
-                }//if(nextLocation())
-                else //nowhere to go. set the idle animation. (or Die)
-                {
-                    mAnimationState = ent.GetAnimationState("Idle");
-                    //mAnimationState = mEntity.GetAnimationState("Die");
-                    //mAnimationState.SetLoop(false);
-                }
+                mAnimationState = ent.GetAnimationState("Walk");
+                mAnimationState.Loop = true;
+                mAnimationState.Enabled = true;
+                mWalking = true;
+                findTarget(env);
             }
-            else //we're in motion
+            if (findTarget(env))
             {
-               
-                //determine how far to move this frame
+                mDestination = mWalkList.First.Value;
+                mDirection = mDestination - Node.Position;
+                mDistance = mDirection.Normalise();
                 float move = mWalkSpeed * evt.timeSinceLastFrame;
                 mDistance -= move;
-                //Check to see if we've arrived at a waypoint
-                if (mDistance <= 0.0f || env.outOfGround(node.Position))
+                if (mDistance <= 0.0f || env.outOfGround(Node.Position))
                 {
+
                     //set our node to the destination we've just reached & reset direction to 0
-                    node.Position=lastPosition;
+                    Node.Position = lastPosition;
                     mDirection = Vector3.ZERO;
                     mWalking = false;
 
-                }//if(mDistance <= 0.0f)
+                }
                 else
                 {
-                    lastPosition = node.Position;
+                    lastPosition = Node.Position;
                     //Rotation code goes here
-                    Vector3 src = node.Orientation * Vector3.UNIT_X;
+                    Vector3 src = Node.Orientation * forward;
                     if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
                     {
-                        node.Yaw(180.0f);
+                        Node.Yaw(180.0f);
                     }
                     else
                     {
                         Quaternion quat = src.GetRotationTo(mDirection);
-                        node.Rotate(quat);
+                        Node.Rotate(quat);
                     }
                     //movement code goes here
-                    node.Translate(mDirection * move);
+                    Node.Translate(mDirection * move);
                 }
-
+                //Update the Animation State.
+                mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
             }
-            //Update the Animation State.
-            mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
-
+            else
+            {
+                Node.Position = lastPosition;
+                mDirection = Vector3.ZERO;
+                mWalking = false;
+            }
         }
-        
-
-
     }
 }

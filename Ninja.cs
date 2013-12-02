@@ -26,8 +26,8 @@ namespace Mogre.Tutorials
             mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
             mWalkList.AddFirst(new Vector3(-100.0f, 0.0f, -200.0f));
             mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
-
-
+            forward = Vector3.NEGATIVE_UNIT_Z;
+            viewingAngle = 40;
         }
         protected override void destroy() { }
 
@@ -60,7 +60,7 @@ namespace Mogre.Tutorials
                     mWalkList.AddLast(tmp);  //add it to the back of the list.
 
                     //update the direction and the distance
-                    mDirection = mDestination - node.Position;
+                    mDirection = mDestination - Node.Position;
                     mDistance = mDirection.Normalise();
 
                 }//if(nextLocation())
@@ -80,25 +80,25 @@ namespace Mogre.Tutorials
                 if (mDistance <= 0.0f)
                 {
                     //set our node to the destination we've just reached & reset direction to 0
-                    node.Position=mDestination;
+                    Node.Position=mDestination;
                     mDirection = Vector3.ZERO;
                     mWalking = false;
                 }//if(mDistance <= 0.0f)
                 else
                 {
                     //Rotation code goes here
-                    Vector3 src = node.Orientation * Vector3.NEGATIVE_UNIT_Z;
+                    Vector3 src = Node.Orientation * forward;
                     if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
                     {
-                        node.Yaw(180.0f);
+                        Node.Yaw(180.0f);
                     }
                     else
                     {
                         Quaternion quat = src.GetRotationTo(mDirection);
-                        node.Rotate(quat);
+                        Node.Rotate(quat);
                     }
                     //movement code goes here
-                    node.Translate(mDirection * move);
+                    Node.Translate(mDirection * move);
                 }
 
             }

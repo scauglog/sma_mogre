@@ -23,7 +23,7 @@ namespace Mogre.Tutorials
             createLight(ref mSceneMgr);
 
             characters = new List<Character>();
-            characters.Add(new Ninja(ref mSceneMgr, new Vector3(10, 0, 10)));
+            characters.Add(new Ninja(ref mSceneMgr, new Vector3(750, 0, 750)));
             characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(120, 0, 120)));
         
         }
@@ -32,8 +32,8 @@ namespace Mogre.Tutorials
         {
             Plane plane = new Plane(Vector3.UNIT_Y, 0);
 
-            MAX_X = 500;
-            MAX_Z = 500;
+            MAX_X = 1500;
+            MAX_Z = 1500;
             MeshManager.Singleton.CreatePlane("ground",
                 ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, plane,
                 MAX_X, MAX_Z, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
@@ -87,6 +87,29 @@ namespace Mogre.Tutorials
                 return true;
             else
                 return false;
+        }
+
+        public List<Character> look(Character lookingCharacter)
+        {
+            
+            List<Character> seenCharacter = new List<Character>();
+
+            Vector3 targetDir;
+            Vector3 lookingCharacterPosition = lookingCharacter.Node.Position;
+            Vector3 lookDir = lookingCharacter.Node.Orientation * lookingCharacter.Forward;
+
+            foreach (Character target in characters)
+            {
+
+                targetDir = target.Node.Position - lookingCharacterPosition;
+                targetDir.Normalise();
+                double vw = Math.Cos(lookingCharacter.ViewingAngle)*lookDir.Length*targetDir.Length;
+                if (lookDir.DotProduct(targetDir) > vw)
+                {
+                    seenCharacter.Add(target);
+                }
+            }
+            return seenCharacter;
         }
     }
 }
