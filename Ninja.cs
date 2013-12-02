@@ -9,7 +9,10 @@ namespace Mogre.Tutorials
 {
        
     class Ninja : Character
-    {  
+    {
+
+        
+        protected int ennemySpotted;
         public Ninja(ref SceneManager mSceneMgr, Vector3 position)
         {
             ent = mSceneMgr.CreateEntity("Ninja"+count.ToString(), "ninja.mesh");
@@ -28,6 +31,8 @@ namespace Mogre.Tutorials
             mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
             forward = Vector3.NEGATIVE_UNIT_Z;
             viewingAngle = 40;
+            state = "calm";
+            ennemySpotted = 0;
         }
         protected override void destroy() { }
 
@@ -37,55 +42,96 @@ namespace Mogre.Tutorials
                 return false;
             return true;
         }
+
+        private bool findEnnemy(Environment env)
+        {
+            List<Character> listchar = env.look(this);
+            double minDist = maxView;
+            Vector3 orientation = Vector3.ZERO;
+            foreach (Character c in listchar)
+            {
+                if (c is SpaceMarine)
+                {
+                    this.state = "alert";
+                    ennemySpotted++;
+                }
+
+                double dist = (c.Node.Position - this.Node.Position).Length;
+                if (minDist > dist)
+                {
+                    minDist = dist;
+                }
+
+            }
+            if (orientation != Vector3.ZERO)
+            {
+                if (mWalkList.Count != 0)
+                    mWalkList.RemoveFirst();
+                mWalkList.AddFirst(orientation);
+                return true;
+            }
+
+            return false;
+        }
+        private bool findFriends(Environment env)
+        {
+            List<Character> listchar = env.look(this);
+            double minDist = maxView;
+            Vector3 position = Vector3.ZERO;
+            foreach (Character c in listchar)
+            {
+                double dist = (c.Node.Position - this.Node.Position).Length;
+                if (minDist > dist)
+                {
+                    minDist = dist;
+                    position = c.Node.Position;
+                }
+
+            }
+            if (position != Vector3.ZERO)
+            {
+                if (mWalkList.Count != 0)
+                    mWalkList.RemoveFirst();
+                mWalkList.AddFirst(position);
+                return true;
+            }
+
+            return false;
+        }
         public override void move(FrameEvent evt, Environment env)
         {
+            findFriends(env);
             if (!mWalking)
-            //either we've not started walking or reached a way point
             {
-                //check if there are places to go
-                if (nextLocation())
-                {
-                    LinkedListNode<Vector3> tmp;
-
-                    //Start the walk animation
-                    mAnimationState = ent.GetAnimationState("Walk");
-                    mAnimationState.Loop = true;
-                    mAnimationState.Enabled = true;
-                    mWalking = true;
-
-                    //Update the destination using the walklist.
-                    mDestination = mWalkList.First.Value; //get the next destination.
-                    tmp = mWalkList.First; //save the node that held it
-                    mWalkList.RemoveFirst(); //remove that node from the front of the list
-                    mWalkList.AddLast(tmp);  //add it to the back of the list.
-
-                    //update the direction and the distance
-                    mDirection = mDestination - Node.Position;
-                    mDistance = mDirection.Normalise();
-
-                }//if(nextLocation())
-                else //nowhere to go. set the idle animation. (or Die)
-                {
-                    mAnimationState = ent.GetAnimationState("Idle1");
-                    //mAnimationState = mEntity.GetAnimationState("Die");
-                    //mAnimationState.SetLoop(false);
-                }
+                mAnimationState = ent.GetAnimationState("Walk");
+                mAnimationState.Loop = true;
+                mAnimationState.Enabled = true;
+                mWalking = true;
             }
-            else //we're in motion
+            if (findEnnemy(env))
             {
-                //determine how far to move this frame
+                mDestination = mWalkList.First.Value;
+                mDirection = mDestination - Node.Position;
+                mDistance = mDirection.Normalise();
                 float move = mWalkSpeed * evt.timeSinceLastFrame;
                 mDistance -= move;
-                //Check to see if we've arrived at a waypoint
-                if (mDistance <= 0.0f)
+
+                if (mDistance <= 0.2f)
                 {
+                    mAnimationState = ent.GetAnimationState("Shoot");
+                }
+                if (env.outOfGround(Node.Position))
+                {
+
                     //set our node to the destination we've just reached & reset direction to 0
-                    Node.Position=mDestination;
+                    Node.Position = lastPosition;
                     mDirection = Vector3.ZERO;
                     mWalking = false;
-                }//if(mDistance <= 0.0f)
+
+                }
                 else
                 {
+                    lastPosition = Node.Position;
                     //Rotation code goes here
                     Vector3 src = Node.Orientation * forward;
                     if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
@@ -100,11 +146,15 @@ namespace Mogre.Tutorials
                     //movement code goes here
                     Node.Translate(mDirection * move);
                 }
-
+                //Update the Animation State.
+                mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
             }
-            //Update the Animation State.
-            mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
+            else
+            {
+                Node.Position = lastPosition;
+                mDirection = Vector3.ZERO;
+                mWalking = false;
+            }
         }
-        
     }
 }

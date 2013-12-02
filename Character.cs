@@ -24,6 +24,7 @@ namespace Mogre.Tutorials
         protected float mWalkSpeed = 50.0f;  // The speed at which the object is moving
         protected bool mWalking;
         protected int maxView;
+        protected String state;
         public SceneNode Node
         {
             get { return node; }

@@ -66,7 +66,6 @@ namespace Mogre.Tutorials
 
         public override void move(FrameEvent evt, Environment env)
         {
-            findTarget(env);
             if (!mWalking)
             {
                 mAnimationState = ent.GetAnimationState("Walk");
@@ -82,7 +81,12 @@ namespace Mogre.Tutorials
                 mDistance = mDirection.Normalise();
                 float move = mWalkSpeed * evt.timeSinceLastFrame;
                 mDistance -= move;
-                if (mDistance <= 0.0f || env.outOfGround(Node.Position))
+
+                if (mDistance <= 0.2f)
+                {
+                    mAnimationState = ent.GetAnimationState("Shoot");
+                }
+                if (env.outOfGround(Node.Position))
                 {
 
                     //set our node to the destination we've just reached & reset direction to 0
