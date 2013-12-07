@@ -10,6 +10,7 @@ namespace Mogre.Tutorials
     class Environment
     {
         private List<Character> characters;
+        private List<Stone> stones;
         private int MAX_X;
         private int MAX_Z;
 
@@ -21,11 +22,11 @@ namespace Mogre.Tutorials
             
             createGround(ref mSceneMgr);
             createLight(ref mSceneMgr);
+            StoneDistibution(ref mSceneMgr);
 
             characters = new List<Character>();
             characters.Add(new Ninja(ref mSceneMgr, new Vector3(750, 0, 750)));
             characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(120, 0, 120)));
-        
         }
 
         private void createGround(ref SceneManager mSceneMgr)
@@ -74,7 +75,22 @@ namespace Mogre.Tutorials
         { 
         }
 
-        public void moveCharacters(FrameEvent evt)  {
+        private void StoneDistibution(ref SceneManager mSceneMgr)
+        {
+
+            new Stone(ref mSceneMgr, new Vector3(0, 0, 0));
+            //for (int i = (-MAX_X / 2)+1; i < MAX_X / 2; i = i + 20)
+            //{
+            //    for (int j = (-MAX_Z / 2)+1; j < MAX_Z / 2; j = j + 20)
+            //    {
+                    
+            //        stones.Add(new Stone(ref mSceneMgr, new Vector3(i, 0, j)));
+            //    }
+            //}
+        }
+
+        public void moveCharacters(FrameEvent evt)
+        {
             foreach (Character c in characters)
             {
                 c.move(evt, this);

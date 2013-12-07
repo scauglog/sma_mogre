@@ -13,7 +13,7 @@ namespace Mogre.Tutorials
         protected Vector3 lastPosition; 
         protected Entity ent;
         protected SceneNode node;
-        protected string name;
+        protected String name;
         protected AnimationState mAnimationState = null; //The AnimationState the moving object
         protected float mDistance = 0.0f; 
         protected Vector3 mDirection = Vector3.ZERO;   // The direction the object is moving

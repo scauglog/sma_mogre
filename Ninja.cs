@@ -43,6 +43,31 @@ namespace Mogre.Tutorials
             return true;
         }
 
+        private bool findTarget(Environment env)
+        {
+            List<Character> listchar = env.look(this);
+            double minDist = maxView;
+            Vector3 position = Vector3.ZERO;
+            foreach (Character c in listchar)
+            {
+                double dist = (c.Node.Position - this.Node.Position).Length;
+                if (minDist > dist)
+                {
+                    minDist = dist;
+                    position = c.Node.Position;
+                }
+
+            }
+            if (position != Vector3.ZERO)
+            {
+                if (mWalkList.Count != 0)
+                    mWalkList.RemoveFirst();
+                mWalkList.AddFirst(position);
+                return true;
+            }
+
+            return false;
+        }
         private bool findEnnemy(Environment env)
         {
             List<Character> listchar = env.look(this);
@@ -108,7 +133,7 @@ namespace Mogre.Tutorials
                 mAnimationState.Enabled = true;
                 mWalking = true;
             }
-            if (findEnnemy(env))
+            if (findTarget(env))
             {
                 mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;

@@ -21,9 +21,6 @@ namespace Mogre.Tutorials
             mAnimationState.Loop = true;
             mAnimationState.Enabled = true;
             mWalkList = new LinkedList<Vector3>();
-            //mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
-            //mWalkList.AddLast(new Vector3(-100.0f, 0.0f, -200.0f));
-            //mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
             lastPosition = position;
             forward = Vector3.UNIT_X;
             viewingAngle = 0.9f;
@@ -76,6 +73,7 @@ namespace Mogre.Tutorials
             }
             if (findTarget(env))
             {
+                Console.Write("test");
                 mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;
                 mDistance = mDirection.Normalise();
