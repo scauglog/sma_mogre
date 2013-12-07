@@ -13,7 +13,7 @@ namespace Mogre.Tutorials
         protected SceneNode node;
         protected String name;
         protected String state;
-        protected static int count=2;
+        protected static int count=1;
         public SceneNode Node
         {
             get { return node; }

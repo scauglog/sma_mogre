@@ -78,15 +78,14 @@ namespace Mogre.Tutorials
         private void StoneDistibution(ref SceneManager mSceneMgr)
         {
 
-            new Stone(ref mSceneMgr, new Vector3(0, 0, 0));
-            //for (int i = (-MAX_X / 2)+1; i < MAX_X / 2; i = i + 20)
-            //{
-            //    for (int j = (-MAX_Z / 2)+1; j < MAX_Z / 2; j = j + 20)
-            //    {
-                    
-            //        stones.Add(new Stone(ref mSceneMgr, new Vector3(i, 0, j)));
-            //    }
-            //}
+            for (int i = (-MAX_X / 2) + 1; i < MAX_X / 2; i = i + 20)
+            {
+                for (int j = (-MAX_Z / 2) + 1; j < MAX_Z / 2; j = j + 20)
+                {
+
+                    new Stone(ref mSceneMgr, new Vector3(i, 0, j));
+                }
+            }
         }
 
         public void moveCharacters(FrameEvent evt)
