@@ -20,14 +20,17 @@ namespace Mogre.Tutorials
         }
 
 
-
         public Stone(ref SceneManager mSceneMgr, Vector3 position)
         {
-            ent = mSceneMgr.CreateEntity("OgreHead" + count.ToString(), "ogrehead.mesh");
+            name = count.ToString();
+            ent = mSceneMgr.CreateEntity("OgreHead" + name, "ogrehead.mesh");
             ent.CastShadows = true;
-            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("OgreHeadNode" + count.ToString());
+            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("OgreHeadNode" + name);
             node.AttachObject(ent);
-            name = count++.ToString();
+            name = count.ToString();
+            node.Position = position;
+            node.Scale(0.35f, 0.35f, 0.35f);
+            count++;
         }
 
     }

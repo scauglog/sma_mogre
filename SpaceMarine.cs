@@ -37,7 +37,7 @@ namespace Mogre.Tutorials
 
         private bool findTarget(Environment env)
         {
-            List<Character> listchar = env.look(this);
+            List<Character> listchar = env.lookCharacter(this);
             double minDist=maxView;
             Vector3 position = Vector3.ZERO;
             foreach (Character c in listchar)

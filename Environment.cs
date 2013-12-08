@@ -22,9 +22,12 @@ namespace Mogre.Tutorials
             
             createGround(ref mSceneMgr);
             createLight(ref mSceneMgr);
-            StoneDistibution(ref mSceneMgr);
+
+            stones = new List<Stone>();
+            stonesDistibution(ref mSceneMgr);
 
             characters = new List<Character>();
+            
             characters.Add(new Ninja(ref mSceneMgr, new Vector3(750, 0, 750)));
             characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(120, 0, 120)));
         }
@@ -75,15 +78,20 @@ namespace Mogre.Tutorials
         { 
         }
 
-        private void StoneDistibution(ref SceneManager mSceneMgr)
+        private void charactersDistribution(ref SceneManager mSceneMgr)
         {
 
-            for (int i = (-MAX_X / 2) + 1; i < MAX_X / 2; i = i + 20)
+        }
+
+        private void stonesDistibution(ref SceneManager mSceneMgr)
+        {
+
+            for (int i = (-MAX_X / 2) + 1; i < MAX_X / 2; i = i + 200)
             {
-                for (int j = (-MAX_Z / 2) + 1; j < MAX_Z / 2; j = j + 20)
+                for (int j = (-MAX_Z / 2) + 1; j < MAX_Z / 2; j = j + 200)
                 {
 
-                    new Stone(ref mSceneMgr, new Vector3(i, 0, j));
+                    stones.Add(new Stone(ref mSceneMgr, new Vector3(i, 0, j)));
                 }
             }
         }
@@ -104,7 +112,7 @@ namespace Mogre.Tutorials
                 return false;
         }
 
-        public List<Character> look(Character lookingCharacter)
+        public List<Character> lookCharacter(Character lookingCharacter)
         {
             
             List<Character> seenCharacter = new List<Character>();
@@ -125,6 +133,27 @@ namespace Mogre.Tutorials
                 }
             }
             return seenCharacter;
+        }
+        public List<Stone> lookStone(Character lookingCharacter)
+        {
+
+            List<Stone> seenStone = new List<Stone>();
+
+            Vector3 targetDir;
+            Vector3 lookingCharacterPosition = lookingCharacter.Node.Position;
+            Vector3 lookDir = lookingCharacter.Node.Orientation * lookingCharacter.Forward;
+
+            foreach (Stone target in stones)
+            {
+                targetDir = target.Node.Position - lookingCharacterPosition;
+                targetDir.Normalise();
+                double vw = Math.Cos(lookingCharacter.ViewingAngle) * lookDir.Length * targetDir.Length;
+                if (lookDir.DotProduct(targetDir) > vw)
+                {
+                    seenStone.Add(target);
+                }
+            }
+            return seenStone;
         }
     }
 }

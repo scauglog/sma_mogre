@@ -50,6 +50,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Character.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Stone.cs" />
     <Compile Include="Component1.cs">
       <SubType>Component</SubType>
