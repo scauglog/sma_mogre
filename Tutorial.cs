@@ -17,6 +17,10 @@ namespace Mogre.Tutorials
         protected static SceneManager mSceneMgr;
         protected static Camera mCamera;
         protected static CameraMan mCameraMan;
+
+        protected static MOIS.InputManager mInputMgr;
+        protected static MOIS.Keyboard mKeyboard;
+        protected static MOIS.Mouse mMouse;
         
         public static void Main()
         {
@@ -33,6 +37,7 @@ namespace Mogre.Tutorials
                 CreateRenderSystem();
                 CreateRenderWindow();
                 InitializeResources();
+                InitializeInput();
                 CreateScene();
                 CreateCamera();
                 CreateViewports();
@@ -85,6 +90,16 @@ namespace Mogre.Tutorials
             ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
         }
 
+        protected void InitializeInput()
+        {
+            int windowHandle;
+            mRenderWindow.GetCustomAttribute("WINDOW", out windowHandle);
+            mInputMgr = MOIS.InputManager.CreateInputSystem((uint)windowHandle);
+
+            mKeyboard = (MOIS.Keyboard)mInputMgr.CreateInputObject(MOIS.Type.OISKeyboard, false);
+            mMouse = (MOIS.Mouse)mInputMgr.CreateInputObject(MOIS.Type.OISMouse, false);
+        }
+
 
         protected virtual void CreateScene()
         {
@@ -123,6 +138,36 @@ namespace Mogre.Tutorials
 
         static bool OnFrameRenderingQueued(FrameEvent evt)
         {
+            mKeyboard.Capture();
+            mMouse.Capture();
+
+            Vector3 cameraMove = Vector3.ZERO;
+
+            if (mKeyboard.IsKeyDown(MOIS.KeyCode.KC_W))
+                cameraMove += mCamera.Direction;
+
+            if (mKeyboard.IsKeyDown(MOIS.KeyCode.KC_S))
+                cameraMove -= mCamera.Direction;
+
+            if (mKeyboard.IsKeyDown(MOIS.KeyCode.KC_A))
+                cameraMove -= mCamera.Right;
+
+            if (mKeyboard.IsKeyDown(MOIS.KeyCode.KC_D))
+                cameraMove += mCamera.Right;
+
+            if (mKeyboard.IsKeyDown(MOIS.KeyCode.KC_Q))
+                cameraMove += mCamera.Up;
+
+            if (mKeyboard.IsKeyDown(MOIS.KeyCode.KC_E))
+                cameraMove -= mCamera.Up;
+
+
+            cameraMove.Normalise();
+            cameraMove *= 150; // Natural speed is 150 units/sec.
+            
+            if (cameraMove != Vector3.ZERO)
+                mCamera.Move(cameraMove * evt.timeSinceLastFrame);
+
             mTimer -= evt.timeSinceLastFrame;
             return (mTimer > 0);
         }
