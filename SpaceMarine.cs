@@ -73,7 +73,6 @@ namespace Mogre.Tutorials
             }
             if (findTarget(env))
             {
-                Console.Write("test");
                 mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;
                 mDistance = mDirection.Normalise();
