@@ -170,6 +170,9 @@ namespace Mogre.Tutorials
             if (cameraMove != Vector3.ZERO)
                 mCamera.Move(cameraMove * evt.timeSinceLastFrame);
 
+            mCamera.Yaw(new Degree(-mMouse.MouseState.X.rel));
+            mCamera.Pitch(new Degree(-mMouse.MouseState.Y.rel));
+
             mTimer -= evt.timeSinceLastFrame;
             return (mTimer > 0);
         }

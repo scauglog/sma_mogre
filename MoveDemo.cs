@@ -3,7 +3,7 @@
  using System.Text;
  using Mogre;
  using Mogre.TutorialFramework;
-
+using MOIS;
 
 namespace Mogre.Tutorials
 {
@@ -13,7 +13,7 @@ namespace Mogre.Tutorials
         
         Environment env;
         protected static MOIS.Keyboard mEnvKeyboard;
-
+       
         protected override void CreateScene()
         {
             // Create SceneManager
@@ -46,6 +46,28 @@ namespace Mogre.Tutorials
             mInputMgr = MOIS.InputManager.CreateInputSystem((uint)windowHandle);
 
             mEnvKeyboard = (MOIS.Keyboard)mInputMgr.CreateInputObject(MOIS.Type.OISKeyboard, true);
+            mEnvKeyboard.KeyPressed += new KeyListener.KeyPressedHandler(OnEnvKeyBuffPressed);
+        }
+
+        protected bool OnEnvKeyBuffPressed(MOIS.KeyEvent arg)
+        {
+            switch (arg.key)
+            {
+                case MOIS.KeyCode.KC_F:
+                    env.removeNinja(ref mSceneMgr);;
+                    break;
+                case MOIS.KeyCode.KC_R:
+                    env.addNinja(ref mSceneMgr); ;
+                    break;
+                case MOIS.KeyCode.KC_H:
+                    env.removeSpaceMarine(ref mSceneMgr); ;
+                    break;
+                case MOIS.KeyCode.KC_Y:
+                    env.addSpaceMarine(ref mSceneMgr); ;
+                    break;
+            }
+
+            return true;
         }
 
         protected override bool OnFrameRenderingQueued(FrameEvent evt)
@@ -54,7 +76,7 @@ namespace Mogre.Tutorials
             
             mEnvKeyboard.Capture();
             Vector3 spotlightMove = Vector3.ZERO;
-
+            
             if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_I))
                 spotlightMove.z -= 100;
 
@@ -75,21 +97,6 @@ namespace Mogre.Tutorials
 
             if (spotlightMove != Vector3.ZERO)
                 env.spotLight.Translate(spotlightMove * evt.timeSinceLastFrame);
-
-            if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_MINUS) && mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_LCONTROL))
-                env.removeNinja(ref mSceneMgr);
-
-            if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_ADD) && mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_LCONTROL))
-                env.addNinja(ref mSceneMgr);
-
-            if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_R))
-                env.removeSpaceMarine(ref mSceneMgr);
-
-            if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_F))
-                env.addSpaceMarine(ref mSceneMgr);
-
-            
-
             
             return true;
         }

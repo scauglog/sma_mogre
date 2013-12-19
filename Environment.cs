@@ -170,7 +170,6 @@ namespace Mogre.Tutorials
 
         private void removeCharacter(ref SceneManager mSceneMgr, ref Character c)
         {
-            characters.Remove(c);
             if (c != null)
             {
                 characters.Remove(c);
@@ -196,11 +195,12 @@ namespace Mogre.Tutorials
         public void removeNinja(ref SceneManager mSceneMgr) 
         {
             Character c= characters.Find(sh => sh is Ninja);
+            removeCharacter(ref mSceneMgr, ref c);
         }
 
         public void addSpaceMarine(ref SceneManager mSceneMgr) 
         {
-            characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(rnd(-1500, 1500), 0, rnd(-1500,1500))));
+            characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(rnd(-MAX_X, MAX_X), 0, rnd(-MAX_Z, MAX_Z))));
         }
 
         public void removeSpaceMarine(ref SceneManager mSceneMgr)
