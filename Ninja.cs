@@ -120,9 +120,10 @@ namespace Mogre.Tutorials
                     stoneTarget.Node.Parent.RemoveChild(stoneTarget.Node);
                     node.AddChild(stoneTarget.Node);
                     stoneTarget.Node.Position = new Vector3(0, 200, 0);
+                    
                     mWalkList.RemoveFirst();
                     mWalkList.AddFirst(castle);
-                    this.state = "return to castle";
+                    this.state = "stone";
                 }
                 if (env.outOfGround(Node.Position))
                 {
@@ -153,7 +154,7 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
             }
-            else if (state == "return to castle")
+            else if (state == "stone")
             {
                 mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;

@@ -151,7 +151,7 @@ namespace Mogre.Tutorials
             {
                 stoneTarget = findTarget(env);
             }
-            if (!mWalking && mAnimationState.HasEnded)
+            if (!mWalking)// && mAnimationState.HasEnded)
             {
                 mAnimationState = ent.GetAnimationState("Walk");
                 mAnimationState.Loop = true;
@@ -177,10 +177,10 @@ namespace Mogre.Tutorials
                     //mWalking = false;
                     stoneTarget.Node.Parent.RemoveChild(stoneTarget.Node);
                     node.AddChild(stoneTarget.Node);
-                    stoneTarget.Node.Position = new Vector3(0, 200, 0);
+                    stoneTarget.Node.Position = new Vector3(0, 100, 0);
                     mWalkList.RemoveFirst();
                     returnPosition = node.Position;
-                    this.state = "have stone";
+                    this.state = "stone";
                 }
                 if (env.outOfGround(Node.Position))
                 {
@@ -211,9 +211,11 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
             }
-            else if (state == "return to the last position")
+            else if (state == "returnposition")
             {
-                mDestination = returnPosition;
+                if(mWalkList.Count==0)
+                    mWalkList.AddFirst(returnPosition);
+                mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;
                 mDistance = mDirection.Normalise();
                 float move = mWalkSpeed * evt.timeSinceLastFrame;
@@ -221,15 +223,13 @@ namespace Mogre.Tutorials
 
                 if (mDistance <= 0.2f)
                 {
+                    
                     //mWalkList.RemoveFirst();
                     //mAnimationState = ent.GetAnimationState("Backflip");
                     //mAnimationState.Enabled = true;
                     //mAnimationState.Loop = false;
                     //mWalking = false;
-                    Node temp = node.GetChild(0);
-                    node.RemoveChild(0);
-                    node.Parent.AddChild(temp);
-                    temp.Position = node.Position;
+                    mWalkList.RemoveFirst();
                     this.state = "free";
                 }
                 if (env.outOfGround(Node.Position))
@@ -261,7 +261,7 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
             }
-            else if (state == "Have Stone")
+            else if (state == "stone")
             {
                 if (mWalkList.Count == 0)
                 {
@@ -280,15 +280,66 @@ namespace Mogre.Tutorials
                 if (mDistance <= 0.2f)
                 {
                     mWalkList.RemoveFirst();
-                    mAnimationState = ent.GetAnimationState("Backflip");
-                    mAnimationState.Enabled = true;
-                    mAnimationState.Loop = false;
-                    mWalking = false;
+                    //mAnimationState = ent.GetAnimationState("Backflip");
+                    //mAnimationState.Enabled = true;
+                    //mAnimationState.Loop = false;
+                    //mWalking = false;
                     Node temp = node.GetChild(0);
                     node.RemoveChild(0);
                     node.Parent.AddChild(temp);
                     temp.Position = node.Position;
-                    this.state = "return to the last position";
+                    this.state = "returnposition";
+                }
+                if (env.outOfGround(Node.Position))
+                {
+
+                    //set our node to the destination we've just reached & reset direction to 0
+                    if(mWalkList.Count!=0)
+                        mWalkList.RemoveFirst();
+                    Node.Position = lastPosition;
+                    mDirection = Vector3.ZERO;
+                    mWalking = false;
+
+                }
+                else
+                {
+                    lastPosition = Node.Position;
+                    //Rotation code goes here
+                    Vector3 src = Node.Orientation * forward;
+                    if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
+                    {
+                        Node.Yaw(180.0f);
+                    }
+                    else
+                    {
+                        Quaternion quat = src.GetRotationTo(mDirection);
+                        Node.Rotate(quat);
+                    }
+                    //movement code goes here
+                    Node.Translate(mDirection * move);
+                }
+                //Update the Animation State.
+                mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
+            }
+            else if (stoneTarget == null)
+            {
+                if (mWalkList.Count == 0)
+                {
+                    float x = (float)rnd.NextDouble() + (float)rnd.Next(1000) - (float)rnd.Next(1000);
+                    float z = (float)rnd.NextDouble() + (float)rnd.Next(1000) - (float)rnd.Next(1000);
+                    mWalkList.AddFirst(new Vector3(x, 0, z));
+                }
+
+                mDestination = mWalkList.First.Value;
+                mDirection = mDestination - Node.Position;
+                mDistance = mDirection.Normalise();
+                float move = mWalkSpeed * evt.timeSinceLastFrame;
+                mDistance -= move;
+                mWalking = true;
+
+                if (mDistance <= 0.2f)
+                {
+                    mWalkList.RemoveFirst();
                 }
                 if (env.outOfGround(Node.Position))
                 {
