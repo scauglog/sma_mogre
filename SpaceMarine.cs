@@ -9,8 +9,8 @@ namespace Mogre.Tutorials
 {
     class SpaceMarine : Character
     {
-            protected Vector3 lastPosition;
-            protected String state;
+            protected static Random rnd;
+            protected static Vector3 returnPosition;
         public SpaceMarine(ref SceneManager mSceneMgr, Vector3 position) 
         {
             ent = mSceneMgr.CreateEntity("Robot" + count.ToString(), "robot.mesh");
@@ -27,8 +27,9 @@ namespace Mogre.Tutorials
             forward = Vector3.UNIT_X;
             viewingAngle = 0.9f;
             maxView = 3000;
-            lastPosition = Vector3.ZERO;
+            returnPosition = Vector3.ZERO;
             state = "free";
+            rnd = new Random();
         }
         protected override void destroy() { }
         protected bool nextLocation()
@@ -38,7 +39,7 @@ namespace Mogre.Tutorials
             return true;
         }
 
-        private bool findTarget(Environment env)
+        private Stone findTarget(Environment env)
         {
             Stone stoneTarget = null;
             List<Character> listchar = env.lookCharacter(this);
@@ -59,6 +60,8 @@ namespace Mogre.Tutorials
                     }
 
                 }
+
+            
             }   
             //foreach (Character c in listchar)
             //{
@@ -75,26 +78,90 @@ namespace Mogre.Tutorials
             {
                 if(mWalkList.Count!=0)
                     mWalkList.RemoveFirst();
-                mWalkList.AddFirst(node.Position);
                 mWalkList.AddFirst(position);
-                return true;
+              
             }
 
-            return false;
+            return stoneTarget;
         }
 
-        public override void move(FrameEvent evt, Environment env)
+    //    public override void move(FrameEvent evt, Environment env)
+    //    {
+    //        if (!mWalking)
+    //        {
+    //            mAnimationState = ent.GetAnimationState("Walk");
+    //            mAnimationState.Loop = true;
+    //            mAnimationState.Enabled = true;
+    //            mWalking = true;
+    //            findTarget(env);
+    //        }
+    //        if (findTarget(env))
+    //        {
+    //            mDestination = mWalkList.First.Value;
+    //            mDirection = mDestination - Node.Position;
+    //            mDistance = mDirection.Normalise();
+    //            float move = mWalkSpeed * evt.timeSinceLastFrame;
+    //            mDistance -= move;
+
+    //            if (mDistance <= 0.2f)
+    //            {
+    //                mAnimationState = ent.GetAnimationState("Shoot");
+    //            }
+    //            if (env.outOfGround(Node.Position))
+    //            {
+
+    //                //set our node to the destination we've just reached & reset direction to 0
+    //                Node.Position = lastPosition;
+    //                mDirection = Vector3.ZERO;
+    //                mWalking = false;
+
+    //            }
+    //            else
+    //            {
+    //                lastPosition = Node.Position;
+    //                //Rotation code goes here
+    //                Vector3 src = Node.Orientation * forward;
+    //                if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
+    //                {
+    //                    Node.Yaw(180.0f);
+    //                }
+    //                else
+    //                {
+    //                    Quaternion quat = src.GetRotationTo(mDirection);
+    //                    Node.Rotate(quat);
+    //                }
+    //                //movement code goes here
+    //                Node.Translate(mDirection * move);
+    //            }
+    //            //Update the Animation State.
+    //            mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
+    //        }
+    //        else
+    //        {
+    //            Node.Position = lastPosition;
+    //            mDirection = Vector3.ZERO;
+    //            mWalking = false;
+    //        }
+    //    }
+    //}
+         public override void move(FrameEvent evt, Environment env)
         {
-            if (!mWalking)
+            Stone stoneTarget = null;
+            if (state == "free")
+            {
+                stoneTarget = findTarget(env);
+            }
+            if (!mWalking && mAnimationState.HasEnded)
             {
                 mAnimationState = ent.GetAnimationState("Walk");
                 mAnimationState.Loop = true;
                 mAnimationState.Enabled = true;
                 mWalking = true;
-                findTarget(env);
             }
-            if (findTarget(env))
+            if (stoneTarget != null)
             {
+                //mWalking = false;
+
                 mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;
                 mDistance = mDirection.Normalise();
@@ -103,7 +170,17 @@ namespace Mogre.Tutorials
 
                 if (mDistance <= 0.2f)
                 {
-                    mAnimationState = ent.GetAnimationState("Shoot");
+                    //mAnimationState = ent.GetAnimationState("Slump");
+                    //mAnimationState.Enabled = true;
+                    //mAnimationState.Loop = false;
+                    
+                    //mWalking = false;
+                    stoneTarget.Node.Parent.RemoveChild(stoneTarget.Node);
+                    node.AddChild(stoneTarget.Node);
+                    stoneTarget.Node.Position = new Vector3(0, 200, 0);
+                    mWalkList.RemoveFirst();
+                    returnPosition = node.Position;
+                    this.state = "have stone";
                 }
                 if (env.outOfGround(Node.Position))
                 {
@@ -134,11 +211,113 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
             }
-            else
+            else if (state == "return to the last position")
             {
-                Node.Position = lastPosition;
-                mDirection = Vector3.ZERO;
-                mWalking = false;
+                mDestination = returnPosition;
+                mDirection = mDestination - Node.Position;
+                mDistance = mDirection.Normalise();
+                float move = mWalkSpeed * evt.timeSinceLastFrame;
+                mDistance -= move;
+
+                if (mDistance <= 0.2f)
+                {
+                    //mWalkList.RemoveFirst();
+                    //mAnimationState = ent.GetAnimationState("Backflip");
+                    //mAnimationState.Enabled = true;
+                    //mAnimationState.Loop = false;
+                    //mWalking = false;
+                    Node temp = node.GetChild(0);
+                    node.RemoveChild(0);
+                    node.Parent.AddChild(temp);
+                    temp.Position = node.Position;
+                    this.state = "free";
+                }
+                if (env.outOfGround(Node.Position))
+                {
+
+                    //set our node to the destination we've just reached & reset direction to 0
+                    Node.Position = lastPosition;
+                    mDirection = Vector3.ZERO;
+                    mWalking = false;
+
+                }
+                else
+                {
+                    lastPosition = Node.Position;
+                    //Rotation code goes here
+                    Vector3 src = Node.Orientation * forward;
+                    if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
+                    {
+                        Node.Yaw(180.0f);
+                    }
+                    else
+                    {
+                        Quaternion quat = src.GetRotationTo(mDirection);
+                        Node.Rotate(quat);
+                    }
+                    //movement code goes here
+                    Node.Translate(mDirection * move);
+                }
+                //Update the Animation State.
+                mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
+            }
+            else if (state == "Have Stone")
+            {
+                if (mWalkList.Count == 0)
+                {
+                    float x = (float)rnd.NextDouble() + (float)rnd.Next(1000) - (float)rnd.Next(1000);
+                    float z = (float)rnd.NextDouble() + (float)rnd.Next(1000) - (float)rnd.Next(1000);
+                    mWalkList.AddFirst(new Vector3(x, 0, z));
+                }
+
+                mDestination = mWalkList.First.Value;
+                mDirection = mDestination - Node.Position;
+                mDistance = mDirection.Normalise();
+                float move = mWalkSpeed * evt.timeSinceLastFrame;
+                mDistance -= move;
+                mWalking = true;
+
+                if (mDistance <= 0.2f)
+                {
+                    mWalkList.RemoveFirst();
+                    mAnimationState = ent.GetAnimationState("Backflip");
+                    mAnimationState.Enabled = true;
+                    mAnimationState.Loop = false;
+                    mWalking = false;
+                    Node temp = node.GetChild(0);
+                    node.RemoveChild(0);
+                    node.Parent.AddChild(temp);
+                    temp.Position = node.Position;
+                    this.state = "return to the last position";
+                }
+                if (env.outOfGround(Node.Position))
+                {
+
+                    //set our node to the destination we've just reached & reset direction to 0
+                    Node.Position = lastPosition;
+                    mDirection = Vector3.ZERO;
+                    mWalking = false;
+
+                }
+                else
+                {
+                    lastPosition = Node.Position;
+                    //Rotation code goes here
+                    Vector3 src = Node.Orientation * forward;
+                    if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
+                    {
+                        Node.Yaw(180.0f);
+                    }
+                    else
+                    {
+                        Quaternion quat = src.GetRotationTo(mDirection);
+                        Node.Rotate(quat);
+                    }
+                    //movement code goes here
+                    Node.Translate(mDirection * move);
+                }
+                //Update the Animation State.
+                mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
             }
         }
     }
