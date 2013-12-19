@@ -15,7 +15,7 @@ namespace Mogre.Tutorials
         protected int ennemySpotted;
         protected Vector3 castle;
         protected static Random rnd;
-            
+        protected int nbStoneCastle;
         public Ninja(ref SceneManager mSceneMgr, Vector3 position)
         {
             ent = mSceneMgr.CreateEntity("Ninja" + count.ToString(), "ninja.mesh");
@@ -41,6 +41,7 @@ namespace Mogre.Tutorials
             rnd = new Random();
 
             castle = new Vector3(-600, 0, -600);
+            nbStoneCastle = 0;
             state = "free";
             ennemySpotted = 0;
             maxView = 3000;
@@ -84,61 +85,7 @@ namespace Mogre.Tutorials
 
             return stoneTarget;
         }
-        //private bool findEnnemy(Environment env)
-        //{
-        //    List<Character> listchar = env.lookCharacter(this);
-        //    double minDist = maxView;
-        //    Vector3 orientation = Vector3.ZERO;
-        //    foreach (Character c in listchar)
-        //    {
-        //        if (c is SpaceMarine)
-        //        {
-        //            this.state = "alert";
-        //            ennemySpotted++;
-        //        }
-
-        //        double dist = (c.Node.Position - this.Node.Position).Length;
-        //        if (minDist > dist)
-        //        {
-        //            minDist = dist;
-        //        }
-
-        //    }
-        //    if (orientation != Vector3.ZERO)
-        //    {
-        //        if (mWalkList.Count != 0)
-        //            mWalkList.RemoveFirst();
-        //        mWalkList.AddFirst(orientation);
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-        //private bool findFriends(Environment env)
-        //{
-        //    List<Character> listchar = env.lookCharacter(this);
-        //    double minDist = maxView;
-        //    Vector3 position = Vector3.ZERO;
-        //    foreach (Character c in listchar)
-        //    {
-        //        double dist = (c.Node.Position - this.Node.Position).Length;
-        //        if (minDist > dist)
-        //        {
-        //            minDist = dist;
-        //            position = c.Node.Position;
-        //        }
-
-        //    }
-        //    if (position != Vector3.ZERO)
-        //    {
-        //        if (mWalkList.Count != 0)
-        //            mWalkList.RemoveFirst();
-        //        mWalkList.AddFirst(position);
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
+        
         public override void move(FrameEvent evt, Environment env)
         {
             Stone stoneTarget = null;

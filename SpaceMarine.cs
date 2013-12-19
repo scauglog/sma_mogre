@@ -9,6 +9,8 @@ namespace Mogre.Tutorials
 {
     class SpaceMarine : Character
     {
+            protected Vector3 lastPosition;
+            protected String state;
         public SpaceMarine(ref SceneManager mSceneMgr, Vector3 position) 
         {
             ent = mSceneMgr.CreateEntity("Robot" + count.ToString(), "robot.mesh");
@@ -25,7 +27,8 @@ namespace Mogre.Tutorials
             forward = Vector3.UNIT_X;
             viewingAngle = 0.9f;
             maxView = 3000;
-            
+            lastPosition = Vector3.ZERO;
+            state = "free";
         }
         protected override void destroy() { }
         protected bool nextLocation()
@@ -37,23 +40,42 @@ namespace Mogre.Tutorials
 
         private bool findTarget(Environment env)
         {
+            Stone stoneTarget = null;
             List<Character> listchar = env.lookCharacter(this);
+            List<Stone> listStone = env.lookStone(this);
             double minDist=maxView;
             Vector3 position = Vector3.ZERO;
-            foreach (Character c in listchar)
-            {
-                double dist = (c.Node.Position - this.Node.Position).Length;
-                if (minDist > dist)
-                {
-                    minDist = dist;
-                    position = c.Node.Position;
-                }
 
-            }
+            if(state == "free"){
+            foreach (Stone c in listStone)
+                {
+                    double dist = (c.Node.Position - this.Node.Position).Length;
+                    //double distFromCastle = (c.Node.Position - castle).Length;
+                    if (minDist > dist)// && distFromCastle > 100)
+                    {
+                        minDist = dist;
+                        position = c.Node.Position;
+                        stoneTarget = c;
+                    }
+
+                }
+            }   
+            //foreach (Character c in listchar)
+            //{
+            //    double dist = (c.Node.Position - this.Node.Position).Length;
+            //    if (minDist > dist)
+            //    {
+            //        minDist = dist;
+            //        position = c.Node.Position;
+            //    }
+
+            //}
+             
             if (position!=Vector3.ZERO)
             {
                 if(mWalkList.Count!=0)
                     mWalkList.RemoveFirst();
+                mWalkList.AddFirst(node.Position);
                 mWalkList.AddFirst(position);
                 return true;
             }
