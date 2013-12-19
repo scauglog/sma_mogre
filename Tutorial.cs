@@ -90,7 +90,7 @@ namespace Mogre.Tutorials
             ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
         }
 
-        protected void InitializeInput()
+        protected virtual void InitializeInput()
         {
             int windowHandle;
             mRenderWindow.GetCustomAttribute("WINDOW", out windowHandle);
@@ -98,6 +98,8 @@ namespace Mogre.Tutorials
 
             mKeyboard = (MOIS.Keyboard)mInputMgr.CreateInputObject(MOIS.Type.OISKeyboard, false);
             mMouse = (MOIS.Mouse)mInputMgr.CreateInputObject(MOIS.Type.OISMouse, false);
+
+
         }
 
 
@@ -136,7 +138,7 @@ namespace Mogre.Tutorials
             mRoot.FrameStarted += new FrameListener.FrameStartedHandler(FrameStarted);
         }
 
-        static bool OnFrameRenderingQueued(FrameEvent evt)
+        protected virtual bool OnFrameRenderingQueued(FrameEvent evt)
         {
             mKeyboard.Capture();
             mMouse.Capture();

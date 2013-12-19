@@ -13,10 +13,19 @@ namespace Mogre.Tutorials
         private List<Stone> stones;
         private int MAX_X;
         private int MAX_Z;
-
+        public SceneNode spotLight;
+        //Function to get random number
+        private static readonly Random random = new Random();
+        private static readonly object syncLock = new object();
+        public static int rnd(int min, int max)
+        {
+            lock (syncLock)
+            { // synchronize
+                return random.Next(min, max);
+            }
+        }
         public Environment(ref SceneManager mSceneMgr)
         {
-
             mSceneMgr.AmbientLight = ColourValue.Black;
             mSceneMgr.ShadowTechnique = ShadowTechnique.SHADOWTYPE_STENCIL_ADDITIVE;
             
@@ -64,14 +73,17 @@ namespace Mogre.Tutorials
             directionalLight.SpecularColour = new ColourValue(.25f, .25f, 0);
             directionalLight.Direction = new Vector3(0, -1, 1);
 
-            Light spotLight = mSceneMgr.CreateLight("spotLight");
-            spotLight.Type = Light.LightTypes.LT_SPOTLIGHT;
-            spotLight.DiffuseColour = ColourValue.Blue;
-            spotLight.SpecularColour = ColourValue.Blue;
-            spotLight.Direction = new Vector3(-1, -1, 0);
-            spotLight.Position = new Vector3(300, 300, 0);
-
-            spotLight.SetSpotlightRange(new Degree(35), new Degree(50));
+            Light spot = mSceneMgr.CreateLight("spotLight");
+            spot.Type = Light.LightTypes.LT_SPOTLIGHT;
+            spot.DiffuseColour = ColourValue.Blue;
+            spot.SpecularColour = ColourValue.Blue;
+            spot.Direction = new Vector3(-1, -1, 0);
+            spot.Position = new Vector3(300, 300, 0);
+            spot.SetSpotlightRange(new Degree(35), new Degree(50));
+            spotLight = mSceneMgr.RootSceneNode.CreateChildSceneNode("spotlight");
+            spotLight.AttachObject(spot);
+            
+            
         }
 
         private void createCastle(ref SceneManager mSceneMgr)
@@ -154,6 +166,57 @@ namespace Mogre.Tutorials
                 }
             }
             return seenStone;
+        }
+
+        private void removeCharacter(ref SceneManager mSceneMgr, ref Character c)
+        {
+            characters.Remove(c);
+            if (c != null)
+            {
+                characters.Remove(c);
+                if (c.State == "stone")
+                {
+                    Node stone = c.Node.GetChild(0);
+                    c.Node.RemoveChild(0);
+                    c.Node.Parent.AddChild(stone);
+                    stone.Position = c.Node.Position;
+
+                }
+                mSceneMgr.DestroySceneNode(c.Node);
+                //c.die();
+                c = null;
+            }
+        }
+
+        public void addNinja(ref SceneManager mSceneMgr)
+        {
+            characters.Add(new Ninja(ref mSceneMgr, new Vector3(rnd(-MAX_X,MAX_X), 0, rnd(-MAX_Z,MAX_Z))));
+        }
+
+        public void removeNinja(ref SceneManager mSceneMgr) 
+        {
+            Character c= characters.Find(sh => sh is Ninja);
+        }
+
+        public void addSpaceMarine(ref SceneManager mSceneMgr) 
+        {
+            characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(rnd(-1500, 1500), 0, rnd(-1500,1500))));
+        }
+
+        public void removeSpaceMarine(ref SceneManager mSceneMgr)
+        {
+            Character c = characters.Find(sh => sh is SpaceMarine);
+            removeCharacter(ref mSceneMgr,ref c);
+        }
+
+        public void removeStone(ref Stone s)
+        {
+            stones.Remove(s);
+        }
+
+        public void addStone(ref Stone s)
+        {
+            stones.Add(s);
         }
     }
 }

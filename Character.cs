@@ -38,6 +38,10 @@ namespace Mogre.Tutorials
         {
             get { return viewingAngle; }
         }
+        public String State
+        {
+            get { return state; }
+        }
 
         protected static int count=1;
         abstract protected void destroy();
