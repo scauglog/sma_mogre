@@ -78,22 +78,16 @@ namespace Mogre.Tutorials
             Vector3 spotlightMove = Vector3.ZERO;
             
             if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_I))
-                spotlightMove.z -= 100;
+                spotlightMove.z -= 200;
 
             if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_K))
-                spotlightMove.z += 100;
+                spotlightMove.z += 200;
 
             if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_J))
-                spotlightMove.x -= 100;
+                spotlightMove.x -= 200;
 
             if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_L))
-                spotlightMove.x += 100;
-
-            if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_U))
-                spotlightMove.y += 100;
-
-            if (mEnvKeyboard.IsKeyDown(MOIS.KeyCode.KC_O))
-                spotlightMove.y -= 100;
+                spotlightMove.x += 200;
 
             if (spotlightMove != Vector3.ZERO)
                 env.spotLight.Translate(spotlightMove * evt.timeSinceLastFrame);

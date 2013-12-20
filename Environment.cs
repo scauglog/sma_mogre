@@ -11,8 +11,10 @@ namespace Mogre.Tutorials
     {
         private List<Character> characters;
         private List<Stone> stones;
-        private int MAX_X;
-        private int MAX_Z;
+        private static int MAX_X= 2000;
+        private static int MAX_Z= 2000;
+        private static int nbInitSpaceMarine=5;
+        private static int nbInitNinja = 5;
         public SceneNode spotLight;
         //Function to get random number
         private static readonly Random random = new Random();
@@ -36,17 +38,16 @@ namespace Mogre.Tutorials
             stonesDistibution(ref mSceneMgr);
 
             characters = new List<Character>();
-            
-            characters.Add(new Ninja(ref mSceneMgr, new Vector3(750, 0, 750)));
-            characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(120, 0, 120)));
+            for(int i=0;i<nbInitNinja;i++)
+                characters.Add(new Ninja(ref mSceneMgr, new Vector3(rnd(-MAX_X / 2, MAX_X / 2), 0, rnd(-MAX_Z / 2, MAX_Z / 2))));
+            for(int i=0;i<nbInitSpaceMarine;i++)
+                characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(rnd(-MAX_X / 2, MAX_X / 2), 0, rnd(-MAX_Z / 2, MAX_Z / 2))));
         }
 
         private void createGround(ref SceneManager mSceneMgr)
         {
             Plane plane = new Plane(Vector3.UNIT_Y, 0);
 
-            MAX_X = 1500;
-            MAX_Z = 1500;
             MeshManager.Singleton.CreatePlane("ground",
                 ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, plane,
                 MAX_X, MAX_Z, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
@@ -189,7 +190,7 @@ namespace Mogre.Tutorials
 
         public void addNinja(ref SceneManager mSceneMgr)
         {
-            characters.Add(new Ninja(ref mSceneMgr, new Vector3(rnd(-MAX_X,MAX_X), 0, rnd(-MAX_Z,MAX_Z))));
+            characters.Add(new Ninja(ref mSceneMgr, new Vector3(rnd(-MAX_X/2,MAX_X/2), 0, rnd(-MAX_Z/2,MAX_Z/2))));
         }
 
         public void removeNinja(ref SceneManager mSceneMgr) 
@@ -200,7 +201,7 @@ namespace Mogre.Tutorials
 
         public void addSpaceMarine(ref SceneManager mSceneMgr) 
         {
-            characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(rnd(-MAX_X, MAX_X), 0, rnd(-MAX_Z, MAX_Z))));
+            characters.Add(new SpaceMarine(ref mSceneMgr, new Vector3(rnd(-MAX_X/2, MAX_X/2), 0, rnd(-MAX_Z/2, MAX_Z/2))));
         }
 
         public void removeSpaceMarine(ref SceneManager mSceneMgr)

@@ -23,6 +23,7 @@ namespace Mogre.Tutorials
             node = mSceneMgr.RootSceneNode.CreateChildSceneNode("NinjaNode" + count.ToString());
             node.AttachObject(ent);
             node.Scale(0.5f, 0.5f, 0.5f);
+            node.Position = position;
             name = count++.ToString();
             mWalkSpeed = 50.0f;
             mAnimationState = ent.GetAnimationState("Idle1");

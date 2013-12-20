@@ -17,6 +17,7 @@ namespace Mogre.Tutorials
             ent.CastShadows = true;
             node = mSceneMgr.RootSceneNode.CreateChildSceneNode("RobotNode" + count.ToString());
             node.AttachObject(ent);
+            node.Position = position;
             name = count++.ToString();
             mWalkSpeed = 50.0f;
             mAnimationState = ent.GetAnimationState("Idle");
