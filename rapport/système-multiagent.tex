@@ -1,3 +1,20 @@
-\chapter*{Système multi-agent}
-\addcontentsline{toc}{chapter}{Système multi-agent}
+\section{Système multi-agent}
 \thispagestyle{fancy}
+
+Nous avons choisis pour nos agents d'implementer un modèle réactif,
+les agents ayant des déplacement aléatoire jusqu'à ce qu'une cible
+entre dans leur champs de vision. Nous avons deux types d'agent qui
+ont des comportements très simple:
+
+\begin{itemize}
+\item les ninjas recherchent des pierres et les ramène à un
+  chateau. Si une pierre se trouve au chateau, elle est ignorée par
+  les ninjas. Elle est également ignorée, si elle se trouve dans les
+  mains d'un autre agent, .
+\item les robots recherchent des pierres qu'ils vont déposer à un
+  endroit aléatoire, puis revienne à la position où ils ont trouvé la
+  pierre. Comme les ninjas, les robots ignore les pierres qui se
+  trouve dans les mains des autres agents. Par contre les robots
+  n'ont pas la notion de chateau.
+\end{itemize} 
+
