@@ -15,6 +15,9 @@ namespace Mogre.Tutorials
         private static int MAX_Z= 2000;
         private static int nbInitSpaceMarine=5;
         private static int nbInitNinja = 5;
+        private static bool randomStone = true;
+        private static int nbStone = 100;
+        private static int stepStone = 500;
         public SceneNode spotLight;
         //Function to get random number
         private static readonly Random random = new Random();
@@ -87,26 +90,28 @@ namespace Mogre.Tutorials
             
         }
 
-        private void createCastle(ref SceneManager mSceneMgr)
-        { 
-        }
-
-        private void charactersDistribution(ref SceneManager mSceneMgr)
-        {
-
-        }
-
         private void stonesDistibution(ref SceneManager mSceneMgr)
         {
-            //stones.Add(new Stone(ref mSceneMgr, new Vector3(600, 0, -500)));
-            for (int i = (-MAX_X / 2) + 1; i < MAX_X / 2; i = i + 200)
+            if (randomStone)
             {
-                for (int j = (-MAX_Z / 2) + 1; j < MAX_Z / 2; j = j + 200)
+                for (int i = 0; i < nbStone; i++)
                 {
-
-                    stones.Add(new Stone(ref mSceneMgr, new Vector3(i, 0, j)));
+                    stones.Add(new Stone(ref mSceneMgr, new Vector3(rnd(-MAX_X / 2, MAX_X / 2), 0, rnd(-MAX_Z / 2, MAX_Z / 2))));
                 }
             }
+            else
+            {
+                for (int i = (-MAX_X / 2) + 1; i < MAX_X / 2; i = i + stepStone)
+                {
+                    for (int j = (-MAX_Z / 2) + 1; j < MAX_Z / 2; j = j + stepStone)
+                    {
+                        stones.Add(new Stone(ref mSceneMgr, new Vector3(i, 0, j)));
+                    }
+                }
+            }
+            
+            
+            
         }
 
         public void moveCharacters(FrameEvent evt)
@@ -119,7 +124,7 @@ namespace Mogre.Tutorials
 
         public bool outOfGround(Vector3 characterPosition)
         {
-            if (characterPosition.x > MAX_X / 2 || characterPosition.x > MAX_Z / 2 || characterPosition.x < -MAX_X / 2 || characterPosition.x < -MAX_Z / 2)
+            if (characterPosition.x > MAX_X / 2 || characterPosition.z > MAX_Z / 2 || characterPosition.x < -MAX_X / 2 || characterPosition.z < -MAX_Z / 2)
                 return true;
             else
                 return false;
@@ -140,7 +145,9 @@ namespace Mogre.Tutorials
                 targetDir = target.Node.Position - lookingCharacterPosition;
                 targetDir.Normalise();
                 double vw = Math.Cos(lookingCharacter.ViewingAngle)*lookDir.Length*targetDir.Length;
-                if (lookDir.DotProduct(targetDir) > vw)
+                double dist = (target.Node.Position - lookingCharacter.Node.Position).Length;
+
+                if (lookDir.DotProduct(targetDir) > vw && dist < lookingCharacter.MaxView)
                 {
                     seenCharacter.Add(target);
                 }
@@ -161,7 +168,9 @@ namespace Mogre.Tutorials
                 targetDir = target.Node.Position - lookingCharacterPosition;
                 targetDir.Normalise();
                 double vw = Math.Cos(lookingCharacter.ViewingAngle) * lookDir.Length * targetDir.Length;
-                if (lookDir.DotProduct(targetDir) > vw)
+                double dist = (target.Node.Position - lookingCharacter.Node.Position).Length;
+                
+                if (lookDir.DotProduct(targetDir) > vw && dist<lookingCharacter.MaxView)
                 {
                     seenStone.Add(target);
                 }

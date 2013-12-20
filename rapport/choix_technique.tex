@@ -5,10 +5,10 @@
 Les différentes classes composants notre code:
 \begin{itemize}
 \item tutorials est une classe que nous avons créé et qui contiens les
-  fonctions de mogre permettant notamment d'intitialiser les caméras,
+  fonctions de mogre permettant notamment d'initialiser les caméras,
   le clavier...
-\item environnement est la classe qui gère notre monde, elle instancie
-  le terrain, les pierres, les premieres entités, les lumières...
+\item environnement est la classe qui gère notre monde, elle instancié
+  le terrain, les pierres, les premières entités, les lumières...
 \item character est une classe abstraite qui sert de base pour nos
   agents.
 \item ninja est évidemment la classe gérant les ninjas, elle est
@@ -36,7 +36,9 @@ deux suivants permettent de configurer les simulations:
   à l'autre, il suffit de modifier l'attribut walkSpeedFactor d'un
   agent.
 \end{description}
-
+\subsection{Environnement}
+L'objet environnement stock toutes les informations de la simulation. Il sert d'interface entre les différent agent. Pour trouver des pierres les agent interrogent "environnement" qui en réponse leur envoie une liste de pierre qu'ils perçoivent en fonction de leurs angle et distance de vue. Environnement contient une méthode lookCharacter qui permet de trouver les personnage que voie. Dans une première version les robot suivait les ogres et devait leur voler leur pierre, mais nous n'avons pas obtenu le résultat souhaité nous avons donc changer d'idée sur le comportement des robot.
+Cette objet sert également à gérer l'ajout ou la suppression de personnage, ainsi que les paramètre initiaux de la simulation tels que la taille du terrain, les lumières, la distribution des pierres. 
 \subsection{Aléatoire}
 Les mouvements aléatoire sont produits en générant deux nombres
 aléatoires, qui sont limité pour que l'agent ne puissent pas recevoir

@@ -1,20 +1,27 @@
 \section{Système multi-agent}
 \thispagestyle{fancy}
 
-Nous avons choisis pour nos agents d'implementer un modèle réactif,
+Nous avons choisis pour nos agents d'implémenter un modèle réactif,
 les agents ayant des déplacement aléatoire jusqu'à ce qu'une cible
 entre dans leur champs de vision. Nous avons deux types d'agent qui
 ont des comportements très simple:
 
-\begin{itemize}
-\item les ninjas recherchent des pierres et les ramène à un
-  chateau. Si une pierre se trouve au chateau, elle est ignorée par
+\begin{description}
+\item[les ninjas :] 
+  Ils recherchent des pierres et les ramène à un
+  chateau. Si une pierre se trouve au château, elle est ignorée par
   les ninjas. Elle est également ignorée, si elle se trouve dans les
-  mains d'un autre agent, .
-\item les robots recherchent des pierres qu'ils vont déposer à un
-  endroit aléatoire, puis revienne à la position où ils ont trouvé la
-  pierre. Comme les ninjas, les robots ignore les pierres qui se
+  mains d'un autre agent.
+  Lorsque le ninja a déposé sa pierre au château il choisie un nouvelle objectif et marche en direction de cette objectif. Si sur ça route il croise une pierre dans son champs de vision il va alors se diriger vers celle ci la ramasser et la ramené au château
+  
+  La notion de château sert au ninja pour constituer le tas de pierre, nous avons choisi que le ninja "naissent" en connaissant l'endroit du château, pour faciliter la convergence de la simulation.
+\item[Les robots :]
+  Ils recherchent des pierres qu'ils vont déposer à un
+  endroit aléatoire sur le terrain. Puis ils reviennent à la position où ils ont trouvé la pierre. Comme les ninjas, les robots ignore les pierres qui se
   trouve dans les mains des autres agents. Par contre les robots
-  n'ont pas la notion de chateau.
-\end{itemize} 
+  n'ont pas la notion de château.
+  
+  Nous avons choisi de les faire revenir à l'endroit ou il ont trouver une pierre pour leur permettre de plus facilement détruire le château des ninja si il le trouve, en effet cette endroit ayant une concentration de pierre importante lorsqu'il y retournera il trouvera une autre pierre à ramasser.
+\end{description}
+
 

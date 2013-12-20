@@ -47,6 +47,10 @@ namespace Mogre.Tutorials
         {
             get { return viewingAngle; }
         }
+        public float MaxView
+        {
+            get { return maxView; }
+        }
         public String State
         {
             get { return state; }

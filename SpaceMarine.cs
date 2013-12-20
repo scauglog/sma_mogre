@@ -285,10 +285,21 @@ namespace Mogre.Tutorials
                     //mAnimationState.Enabled = true;
                     //mAnimationState.Loop = false;
                     //mWalking = false;
-                    Node temp = node.GetChild(0);
-                    node.RemoveChild(0);
-                    node.Parent.AddChild(temp);
-                    temp.Position = node.Position;
+                    
+                    try
+                    {
+                        Node temp = node.GetChild(0);
+                        node.GetChildIterator();
+                        //node.RemoveChild(0);
+                        node.RemoveAllChildren();
+                        node.Parent.AddChild(temp);
+                        temp.Position = node.Position;
+
+                    }
+                    catch { 
+                    
+                    }
+                    
                     this.state = "returnposition";
                 }
                 if (env.outOfGround(Node.Position))

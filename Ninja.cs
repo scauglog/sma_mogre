@@ -16,6 +16,7 @@ namespace Mogre.Tutorials
         protected Vector3 castle;
         protected static Random rnd;
         protected int nbStoneCastle;
+        protected int stoneCastle;
         public Ninja(ref SceneManager mSceneMgr, Vector3 position)
         {
             ent = mSceneMgr.CreateEntity("Ninja" + count.ToString(), "ninja.mesh");
@@ -30,9 +31,9 @@ namespace Mogre.Tutorials
             mAnimationState.Loop = true;
             mAnimationState.Enabled = true;
             mWalkList = new LinkedList<Vector3>();
-            mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
-            mWalkList.AddFirst(new Vector3(-100.0f, 0.0f, -200.0f));
-            mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
+            //mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
+            //mWalkList.AddFirst(new Vector3(-100.0f, 0.0f, -200.0f));
+            //mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
             forward = Vector3.NEGATIVE_UNIT_Z;
             viewingAngle = 40;
             mAnimationState = ent.GetAnimationState("Walk");
@@ -40,12 +41,13 @@ namespace Mogre.Tutorials
             mAnimationState.Enabled = true;
             mWalking = true;
             rnd = new Random();
-
-            castle = new Vector3(-600, 0, -600);
+            stoneCastle = 0;
+            castle = new Vector3();
+            castle = Vector3.ZERO;
             nbStoneCastle = 0;
             state = "free";
             ennemySpotted = 0;
-            maxView = 3000;
+            maxView = 200;
         }
         protected override void destroy() { }
 
@@ -61,7 +63,7 @@ namespace Mogre.Tutorials
             Stone stoneTarget = null;
             List<Character> listChar = env.lookCharacter(this);
             List<Stone> listStone = env.lookStone(this);
-
+            
             double minDist = maxView;
             Vector3 position = Vector3.ZERO;
             foreach (Stone c in listStone)
@@ -76,14 +78,20 @@ namespace Mogre.Tutorials
                 }
 
             }
-            if (position != Vector3.ZERO)
+            
+            if (listStone.Count > stoneCastle && stoneTarget != null)
+            {
+                stoneCastle = listStone.Count;
+                castle = stoneTarget.Node.Position;
+                stoneTarget = null;
+            }
+            if (position != Vector3.ZERO && stoneTarget != null)
             {
                 if (mWalkList.Count != 0)
                     mWalkList.RemoveFirst();
                 mWalkList.AddFirst(position);
 
             }
-
             return stoneTarget;
         }
         
@@ -96,6 +104,7 @@ namespace Mogre.Tutorials
             }
             if (!mWalking && mAnimationState.HasEnded)
             {
+                mAnimationState.Enabled = false;
                 mAnimationState = ent.GetAnimationState("Walk");
                 mAnimationState.Loop = true;
                 mAnimationState.Enabled = true;
@@ -121,7 +130,7 @@ namespace Mogre.Tutorials
                     stoneTarget.Node.Parent.RemoveChild(stoneTarget.Node);
                     node.AddChild(stoneTarget.Node);
                     stoneTarget.Node.Position = new Vector3(0, 200, 0);
-                    
+                    //must set stone to unavailable
                     mWalkList.RemoveFirst();
                     mWalkList.AddFirst(castle);
                     this.state = "stone";
@@ -170,10 +179,19 @@ namespace Mogre.Tutorials
                     mAnimationState.Enabled = true;
                     mAnimationState.Loop = false;
                     mWalking = false;
-                    Node temp = node.GetChild(0);
-                    node.RemoveChild(0);
-                    node.Parent.AddChild(temp);
-                    temp.Position = node.Position;
+                    try
+                    {
+                        Node temp = node.GetChild(0);
+                        //node.RemoveChild(0);
+                        node.RemoveAllChildren();
+                        node.Parent.AddChild(temp);
+                        temp.Position = node.Position;
+
+                    }
+                    catch
+                    {
+
+                    }
                     this.state = "free";
                 }
                 if (env.outOfGround(Node.Position))
