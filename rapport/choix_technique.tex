@@ -37,8 +37,13 @@ deux suivants permettent de configurer les simulations:
   agent.
 \end{description}
 \subsection{Environnement}
-L'objet environnement stock toutes les informations de la simulation. Il sert d'interface entre les différent agent. Pour trouver des pierres les agent interrogent "environnement" qui en réponse leur envoie une liste de pierre qu'ils perçoivent en fonction de leurs angle et distance de vue. Environnement contient une méthode lookCharacter qui permet de trouver les personnage que voie. Dans une première version les robot suivait les ogres et devait leur voler leur pierre, mais nous n'avons pas obtenu le résultat souhaité nous avons donc changer d'idée sur le comportement des robot.
-Cette objet sert également à gérer l'ajout ou la suppression de personnage, ainsi que les paramètre initiaux de la simulation tels que la taille du terrain, les lumières, la distribution des pierres. 
+L'objet environnement stock toutes les informations de la simulation. C'est cette classe qui détermine à quelles informations sur le monde les agents ont accès. Pour trouver des pierres les agent interrogent "environnement" qui en réponse leur envoie une liste de pierre qu'ils perçoivent en fonction de leurs angle et distance de vue.
+
+Environnement contient une méthode lookCharacter qui permet de trouver les personnages que voie un personnage. Dans une première version les robot suivaient les ogres et devaient leur voler leur pierre, mais nous n'avons pas obtenu le résultat souhaité (beaucoup de bug et glitch) nous avons donc changer d'idée sur le comportement des robot, pour leur donner un comportement plus simple à implémenter.
+
+Environnement sert également à gérer l'ajout ou la suppression de personnage, ainsi que les paramètre initiaux de la simulation tels que la taille du terrain, les lumières, la distribution des pierres. Lorsque un agent porte une pierre il le signal a l'environnent qui mets alors cette objet à "porter" ce qui empêche les autres personnage de prendre la même pierre et résout un bug d'empilement de nœud qui nous a longtemps tenu tête.
+
+La classe environnement permet de gérer les paramètre initiaux de la simulation tels que ; la taille du terrain, le nombre de pierre sur le terrain, la méthode de distribution des pierres sur le terrain, ou encore le nombre de chaque agent. Ces paramètre sont modifiable en changeant les variable statique de la classe
 \subsection{Aléatoire}
 Les mouvements aléatoire sont produits en générant deux nombres
 aléatoires, qui sont limité pour que l'agent ne puissent pas recevoir
@@ -50,9 +55,5 @@ agents.
 
 Une méthode "outOfGround" permet à un agent d'interroger
 l'environnement pour savoir s'il va sortir du terrain, ce qui n'est
-pas sensé arrivé. Dans le cas contraire, il est renvoyé vers une autre
-positions a l'interieurs du terrain.
+pas sensé arrivé au vu de la méthode pour générer des trajectoires. Dans le cas contraire, il est renvoyé vers une autre positions à l'intérieur du terrain.
 
-\subsection{environnement}
-La classe environnement initialise le monde et sais tout. Elle a la liste des 
-agents, des pierres, connait leur positions. c'est cette classe qui determine à quelles informations sur le monde les agents ont accès.

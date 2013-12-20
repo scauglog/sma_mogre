@@ -1,27 +1,26 @@
 \section{Système multi-agent}
 \thispagestyle{fancy}
-
+\subsection{Comportement des agents}
 Nous avons choisis pour nos agents d'implémenter un modèle réactif,
 les agents ayant des déplacement aléatoire jusqu'à ce qu'une cible
 entre dans leur champs de vision. Nous avons deux types d'agent qui
 ont des comportements très simple:
 
+
 \begin{description}
 \item[les ninjas :] 
-  Ils recherchent des pierres et les ramène à un
-  chateau. Si une pierre se trouve au château, elle est ignorée par
-  les ninjas. Elle est également ignorée, si elle se trouve dans les
-  mains d'un autre agent.
+  Ils recherchent des pierres et les ramène à un château. Si une pierre se trouve au château du ninja concerné, elle est ignorée par ce ninjas mais pas par les autres. Elle est également ignorée, si elle se trouve dans les mains d'un autre agent.
   Lorsque le ninja a déposé sa pierre au château il choisie un nouvelle objectif et marche en direction de cette objectif. Si sur ça route il croise une pierre dans son champs de vision il va alors se diriger vers celle ci la ramasser et la ramené au château
   
-  La notion de château sert au ninja pour constituer le tas de pierre, nous avons choisi que le ninja "naissent" en connaissant l'endroit du château, pour faciliter la convergence de la simulation.
+  La notion de château sert au ninja pour constituer le tas de pierre, nous avons choisi que le ninja détermine la position du château en fonction de l'endroit ou il vois le plus de pierre, ainsi si un ninja a construit un plus gros tas que lui, le ninja vas défnir ce gros tas comme étant sont nouveau château. 
 \item[Les robots :]
-  Ils recherchent des pierres qu'ils vont déposer à un
-  endroit aléatoire sur le terrain. Puis ils reviennent à la position où ils ont trouvé la pierre. Comme les ninjas, les robots ignore les pierres qui se
-  trouve dans les mains des autres agents. Par contre les robots
-  n'ont pas la notion de château.
+  Ils recherchent des pierres qu'ils vont déposer à un endroit aléatoire sur le terrain. Puis ils reviennent à la position où ils ont trouvé la pierre. Comme les ninjas, les robots ignore les pierres qui se trouve dans les mains des autres agents. Par contre les robots n'ont pas la notion de château.
   
-  Nous avons choisi de les faire revenir à l'endroit ou il ont trouver une pierre pour leur permettre de plus facilement détruire le château des ninja si il le trouve, en effet cette endroit ayant une concentration de pierre importante lorsqu'il y retournera il trouvera une autre pierre à ramasser.
+  Nous avons choisi de faire revenir les robots à l'endroit ou ils ont trouvé une pierre pour leur permettre de plus facilement détruire le château des ninja si il le trouve, en effet cette endroit ayant une concentration de pierre importante lorsqu'il y retournera il trouvera une autre pierre à ramasser. Lorsque le robot retourne à l'endroit ou il a trouvé ça pierre il ignore les pierres qu'il croise sur sont chemin.
 \end{description}
 
+\subsection{Simulations}
+Lors de simulation ont voit apparaitre un comportement collaboratif chez les ninjas, due au fait qu'ils redéfinissent l'endroit de leur tas en fonction de l'endroit ou il perçoive le plus de pierre. Parfois il arrive que deux ninja soit bloqué, les ninja prenant respectivement dans le tas de l'autre pour mettre la pierre dans leur tas. Ce comportement est surtout observé lorsque deux tas sont proche.
+
+Malgré leur marche plus rapide que les ninja dans la configuration initiale de l'application, ceux ci ne parviennent pas détruire le tas des Ninja. cependant on observe qu'après un certain temps beaucoup on trouvé le tas de ninja et tente de le détruire. Ainsi si on laisse tourner la simulation suffisamment longtemps on vois un fortement activité des agents concentré au tour d'un tas unique de pierres.
 
