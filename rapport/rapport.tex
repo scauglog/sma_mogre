@@ -1,0 +1,58 @@
+\documentclass[a4paper,11pt,final]{report}
+% Pour une impression recto verso, utilisez plutôt ce documentclass :
+%\documentclass[a4paper,twoside,11pt,final]{article}
+
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{setspace}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\usepackage[french]{varioref}
+\usepackage[top=7em, bottom=7em, left=7em, right=7em]{geometry}
+\usepackage{wrapfig}
+\usepackage{fancyhdr}
+\fancyhf{}
+\renewcommand{\footrulewidth}{0.05em}
+\lhead{\leftmark}
+\cfoot{\thepage}
+\lfoot{\reportauthor}
+\rfoot{Projet SMA}
+
+\newcommand{\reporttitle}{Conception d'un système multi-agent dans un environnement 3D}     % Titre
+\newcommand{\reportauthor}{Louis \textsc{LE CLEC'H}\\
+                           Romain \textsc{SAGEAN}} % Auteur
+\newcommand{\reportsubject}{} % Sujet
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\siecle}[1]{\textsc{\romannumeral #1}ème}
+\setlength{\parskip}{1ex} % Espace entre les paragraphes
+
+
+\hypersetup{
+    pdftitle={\reporttitle},%
+    pdfauthor={\reportauthor},%
+    pdfsubject={\reportsubject},%
+   % pdfkeywords={rapport} {vos} {mots} {clés}
+}
+
+\begin{document}
+  \include{Title}
+  %\cleardoublepage % Dans le cas du recto verso, ajoute une page blanche si besoin
+  \tableofcontents % Table des matières
+  \listoffigures
+ % \sloppy          % Justification moins stricte : des mots ne dépasseront pas des paragraphes
+  %\cleardoublepage
+  \begin{onehalfspace}
+  \pagestyle{fancy}
+  
+  \include{Intro}
+
+  
+  
+  \include{Conclusion}
+  \begin{spacing}{2.0}
+    \include{Bibliographie}
+  \end{spacing}
+  \include{Annexe}
+\end{onehalfspace}
+\end{document}

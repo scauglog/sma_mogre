@@ -1,0 +1,335 @@
+\chapter{Présentation de la mission}
+\thispagestyle{fancy}
+
+\section{l'intranet GRA2NET}
+
+les collaborateurs de la DSI de Groupama Rhône-Alpes Auvergne utilisent au
+quotidien GRA2NET. Cet intranet rassemble de nombreux outils de
+gestion et de nombreux liens vers des applications externes. Il est
+organisé en onglet regroupant les applications et les liens par corps
+de metier (administration réseau, gestion du materiel, téléphonie...).
+
+Parmis les outils les plus utilisés, on retrouve par exemple une liste
+des sous-réseaux de l'entreprise, un outils d'installation de
+logiciel, un autre permettant de lister les logiciels utilisés et les
+statistiques les concernants.
+
+
+\section{Contexte de la refonte de l'intranet}
+
+L’intranet gra2net a été développé il y a une vingtaine d’année dans
+le but de rassembler au même endroit les différents outils de la DSI,
+et de permettre un accès rapide aux applications externes. Avec le
+temps, de nouveaux outils sont apparus et gra2net s’est étoffé, mais
+de par sa conception et malgré une première refonte en 2002, celui-ci
+est difficilement maintenable. Si de nouveaux liens ont été ajoutés,
+les liens obsolètes n’ont pas été supprimés ou mis à jour, il s’en est
+suivi une navigation de plus en plus compliquée et un désintéressement
+progressif de l’intranet.
+
+Cependant, plusieurs outils sont encore utilisés par de nombreux
+collaborateurs, c’est pourquoi une refonte de gra2net a été envisagée,
+pour d’une part le mettre à jour et l’adapter aux nouveaux usages des
+collaborateurs, et d’autre part revoir sa conception pour le rendre
+plus souple et permettre ainsi une maintenance facile.
+
+
+\section{Description de la mission}
+
+La mission qui m'a été donné par Patrick HINSCHBERGER était de faire
+d'abord la conception, puis un prototype de la nouvelle version de
+gra2net en suivant la méthode de projet recemment mise en place a
+Groupama. J'ai donc eu la chance de pouvoir participer à la majorité 
+des étapes du projet sous la direction de M Hinschberger. 
+
+\chapter{Organisation du projet}
+
+
+
+
+\chapter{Conception de la nouvelle version}
+
+\section{Analyse de l'existant}
+
+Pour pouvoir organiser la refonte de l'intranet, il me fallait d'abord
+connaitre l'intranet existant. J'ai donc commencé par passer du temps
+a prendre l'outil en main, et à le tester afin de pouvoir mettre en
+évidence certains des problèmes dont il pouvait souffir.  j'ai ensuite
+interviewé tous les utilisateurs de cet intranet (soit la plupart des
+membres de la DSI) pour apprendre quelle utilisation de l'intranet ils
+avaient, quelles fonctionnalités étaient devenues obsolètes
+et quelles fonctionnalités ils souhaitaient voir apparaitre.
+
+Cette tache, même si elle était necessaire, a été assez longue et m'a
+pris trois semaines. La principale difficulté fut de pouvoir voir un
+maximum de monde car un certain nombre de collaborateur étaient déjà
+en vacances ou étaient pris par leur propre projet. Une autre part de
+mon temps à également été consacré à la synthèse de chaque interview,
+dans le but de pouvoir d'abord créer une macro-expression du besoin,
+résumant les axes d'amélioration devant être suivis. J'ai enfin rédigé
+le dossier de specification fonctionnelle, beaucoup plus exhaustif sur
+les modifications apportés à l'intranet.
+
+L'ancienne version de l'intranet gra2net avait été développé en Visual
+Basic et était optimisé pour Internet Explorer 6. Elle exploite des
+bases de données gérées par SQL Server 2008 R2, et est organisée en
+differents onglets:
+\begin{itemize}
+\item Gestion
+\item Système
+\item Exploitation
+\item Reseau
+\item Statistiques
+\item Sécurité
+\item Téléphonie\\
+\end{itemize}
+
+Comme je l'ai indiqué en introduction, ces onglets regroupent
+plusieurs et/ou liens dont un certain nombres sont
+obsolètes. L'interface souffre de gros problèmes d'érgonomie, par
+exemple, on ne peux faire un clique gauche pour acceder au contenus
+d'un onglet, il faut ouvrir un nouvel onglet. Par ailleurs certains
+outils possède une partie de leurs modules dans onglet et une partie
+dans l'autre (c'est notamment le cas de l'outil de télé-distribution
+RADIA, dont l'installeur de de logiciel se trouvait dans la partie
+système et dont les modules de statistique se trouvait dans la partie
+gestion).
+
+\begin{figure}[h]
+\includegraphics[scale=0.55]{Images/gra2net_old.png}
+\caption{Ancienne version de l'intranet}
+\label{Ancienne version de l'intranet}
+\end{figure}
+
+\section{Spécifications fonctionnelles}
+
+Le dossier de spécification fonctionnelle est disponible en annexe, en
+voici néanmoins un résumé.
+
+\noindent la conception nouvelle version de l'intranet s'appuie sur trois axes majeurs:
+\begin{itemize}
+\item une refonte de l'architecture du site, pour accelerer l'accès aux liens/outils.
+\item un nettoyage du contenu en supprimant ou en mettant à jour les liens ou les outils obsolètes.
+\item La création de nouveaux outils répondant à des besoins de la DSI.\\
+\end{itemize} 
+
+\subsection*{Une nouvelle architecture}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.55]{Images/Archi_detaillee.png}
+\caption{La nouvelle architecture de l'intranet}
+\label{La nouvelle architecture de l'intranet}
+\end{center}
+\end{figure}
+
+La nouvelle architecture du site est prévue pour que tous les liens ou
+outils soient accessibles en trois actions au maximum. J'ai décidé
+pour cela de fusionner les onglets Systèmes, Gestion et Exploitation
+en un seul nommé Système/Gestion et de sortir les fonctions de
+télé-distributions dans un onglet dédié, l'idée étant de maintenir une
+arborescence qui ne soit pas trop large et avec des onglets plus
+cohérents.
+
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.80]{Images/menu.png}
+\caption{Nouvelle version de l'intranet}
+\label{Nouvelle version de l'intranet}
+\end{center}
+\end{figure}
+
+
+\subsection*{Création de nouveaux outils}
+
+Avec le temps de nouveaux besoins sont apparus et il est ressortis de mes interviews
+que de nouveaux outils devaient être créés:
+\begin{description}
+\item[Outil gestion de serveur :] Cet outil doit permettre aux
+  collaborateurs de gérer les stocks de serveur (par exemple savoir
+  sur quel site se trouve un serveur, quels sont les serveurs non
+  utilisé etc.).
+\item[Outil gestion de documentation :] Cet doit permettre de
+  regrouper toute la documentation au même endroit.
+\item[Outil extranet :] Comme pour la documentation l'idée est de
+  regrouper les différents extranets de chaque onglet au sein d'un même outil.
+\end{description}
+
+
+
+\chapter{réalisation}
+
+Le dossier de specification technique est disponible en annexe, mais
+nous allons en résumer le principal ici.  Les choix techniques ont été
+faits selon plusieurs critères:
+
+\begin{itemize}
+\item Faciliter la maintenance.
+\item Ameliorer la fiabilité des outils.
+\end{itemize}
+
+Le langage choisi à été le PHP, combiné à un framework interne à
+Groupama. Le developpement s'est fait en utlisant le pattern MVC
+(modèle-view-controller). L'idée était d'utiliser les outils connus et
+maitrisé des équipes de la DSI de Groupama afin de facilité la
+maintenance. Les bases de données existante étaient gérées par SQL
+server 2008 RC, j'ai donc continué à l'utiliser. L'intranet était
+hébergé par un serveur administré par windows server 2008 utilisant
+IIS (Internet Information Service). Enfin j'ai utilisé eclipse comme IDE 
+de développement et j'ai utilisé les moteurs d'internet explorer 9 et de 
+chrome pour tester le rendu des pages au fur et à mesure.
+
+
+\section{sécurité de l'intranet}
+
+L'intranet doit être accessible à tous les collaborateurs de la DSI,
+et les informations qu'il contient rapidement accessible, cependant
+les bases de données alimentées via les interfaces de l'intranet
+impactent de nombreux outils. Il convenait donc d'implémenter une
+gestion des droits permettant de limiter l'accés en écriture sur les
+bases de données. Je me suis appuyé pour cela sur le framework PHP
+interne de Groupama, celui-ci contenait notamment une interface pour
+faire le lien entre un formulaire placé sur une page de login et
+l'Active Directory (qui pour rappel est un service d'identification 
+implémenté par Microsoft pour se connecter sur un réseau d'entreprise).
+
+L'idée était donc de permettre à un utilisateur de s'identifier sur
+l'intranet, de vérifier son identité dans l'Active Directory, puis de
+lui attribué des droits codé "en dur" au niveau de
+l'application. L'association entre les utilisateurs et leurs droits
+potentiels se fait au niveau d'une petite base de données qui n'était
+pas encore accessible depuis l'intranet lui-même avant mon départ.
+
+Si l'utilisateur possède les droits, alors des boutons de mise à jour,
+d'ajout et de suppression apparaissent sur les différentes interfaces.
+1
+
+\section{Onglets développés}
+
+\subsection{Gestion de serveurs}
+
+j'ai développé cet outil pour faciliter la gestion logistique des
+serveurs aux collaborateurs. Il permet via un ensemble de formulaire
+d'effectuer des recherches sur les serveurs de la DSI et ainsi d'avoir
+les relations entre les serveurs physiques et virtuels. On peut
+également via cet outil connaitre l'emplacement des bases de données.
+
+J'ai conçu la base de données associée dont voici le schéma entités-associations:
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.5]{Images/entites_associations.jpg}
+\caption{Schéma entités-associations}
+\label{Schéma entités-associations}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.85]{Images/gestion_serveurs.png}
+\caption{L'outil gestion de serveurs}
+\label{L'outil gestion de serveurs}
+\end{center}
+\end{figure}
+
+
+
+Lorsque la recherche est lancée, l'intranet interroge la base de
+données et renvoies les occurences correspondantes dans un
+tableau. L'utilisateur peut ainsi choisir le serveur sur lequel il
+souhaite avoir des informations puis mettre à jour les informations si
+besoin est (et s'il possède les droits bien sur).
+
+
+
+Les données sont transmisesd'une page à l'autre via la méthode POST
+pour les formulaires et par la méthode GET pour les occurences
+présente dans le tableaux.
+
+\subsection{télédistribution}
+
+Cette partie permet aux collaborateurs de la DSI d'installer des
+logiciels sur des postes depuis un serveur. Pour le moment, l'outil de
+télédistribution utilisé est Radia, et les collaborateurs ont accès à
+un certain nombre de statistiques. 
+
+Cette partie est un simple regroupement de liens permettant d'arriver
+rapidement aux fonctionnalités de Radia.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale =0.85]{Images/teledistribution.png}
+\caption{Menu de la partie Télédistribution}
+\label{Menu de la partie Télédistribution}
+\end{center}
+\end{figure}
+
+\subsection{Outil réseau}
+
+Cet outil était déjà présent dans l'ancienne version de l'intranet. Il
+fournit de nombreuse informations sur les différents sous-réseaux de
+l'entreprise, et notamment toutes les informations de connexion des
+différentes agence de la région.
+
+Du fait de son existence dans l'ancienne version, le travail a été
+plus rapide que pour l'outil de gestion des serveurs, notamment parce
+que les bases de données étaient immédiatement utilisables. j'ai
+également réutilisé le même modèle graphique que pour l'outil gestion
+des serveurs.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.85]{Images/outil_reseau.png}
+\caption{Outil d'information du réseau}
+\label{Outil d'information du réseau}
+\end{center}
+\end{figure}
+
+\subsection{Gestion du référentiel Architecture Technique (RAT)}
+
+Cet outil permet d'avoir des informations sur les différents logiciels
+installé au sein de Groupama. Version, nombre de poste sur lesquels
+la-dite version est installée, etc.
+
+De même que pour l'outil d'information réseau, ce référentiel éxistait
+déjà dans l'ancienne version et j'ai pu récupérer les bases de
+données, tout en appliquant le même style graphique que pour les
+autres onglets.
+
+
+\subsection{Sécurité}
+
+Cette partie est un portail vers les différents outils utilisé par 
+l'équipe chargé de la sécurité, notamment vers des solutions de sécurité 
+comme Symantec ou des statistiques liées au Firewall de Groupama.
+
+\subsection{Téléphonie}
+
+Comme la partie Sécurité, la partie Téléphonie est plus un portails
+vers les outils utilisé par l'équipe Téléphonie de Groupama (par
+exemple vers la suite Genesys d'Alcatel-Lucent).
+
+
+
+
+\section{Environnement logiciel final}
+
+L'intranet, en plus d'être un portail vers des outils externes à la
+DSI (par exemple vers HP Network Node manager qui sert à gerer le
+reseau), sert donc également à accéder à des outils interne à la DSI
+(notamment à Easy Vista qui permet entre autre d'associer du materiel
+à un collaborateur ou au référentiel collaborateur) et d'interface
+pour alimenter plusieurs bases de données auxquelles accèdent ces
+outils.
+
+D'un point du vue de la réalisation, voici comment se situe l'intranet après la refonte:
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.85]{Images/Environnement_logiciel.png}
+\caption{Environnement Logiciel}
+\label{Environnement Logiciel}
+\end{center}
+\end{figure}
+ 
