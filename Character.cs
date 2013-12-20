@@ -21,10 +21,17 @@ namespace Mogre.Tutorials
         protected Vector3 forward;
         protected float viewingAngle;
         protected LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
-        protected float mWalkSpeed = 50.0f;  // The speed at which the object is moving
+        protected static float mWalkSpeed = 50.0f;  // The speed at which the object is moving 50=natural walk
         protected bool mWalking;
         protected int maxView;
         protected String state;
+        protected float walkSpeedFactor;
+
+        public static float MWalkSpeed
+        {
+            get { return Character.mWalkSpeed; }
+            set { Character.mWalkSpeed = value; }
+        }
         public SceneNode Node
         {
             get { return node; }
@@ -42,6 +49,7 @@ namespace Mogre.Tutorials
         {
             get { return state; }
         }
+        
 
         protected static int count=1;
         abstract protected void destroy();

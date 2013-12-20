@@ -54,16 +54,22 @@ namespace Mogre.Tutorials
             switch (arg.key)
             {
                 case MOIS.KeyCode.KC_F:
-                    env.removeNinja(ref mSceneMgr);;
+                    env.removeNinja(ref mSceneMgr);
                     break;
                 case MOIS.KeyCode.KC_R:
-                    env.addNinja(ref mSceneMgr); ;
+                    env.addNinja(ref mSceneMgr);
                     break;
                 case MOIS.KeyCode.KC_H:
-                    env.removeSpaceMarine(ref mSceneMgr); ;
+                    env.removeSpaceMarine(ref mSceneMgr);
                     break;
                 case MOIS.KeyCode.KC_Y:
-                    env.addSpaceMarine(ref mSceneMgr); ;
+                    env.addSpaceMarine(ref mSceneMgr);
+                    break;
+                case MOIS.KeyCode.KC_Z:
+                    Character.MWalkSpeed += 50;
+                    break;
+                case MOIS.KeyCode.KC_X:
+                    Character.MWalkSpeed -= 50;
                     break;
             }
 

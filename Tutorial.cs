@@ -16,7 +16,7 @@ namespace Mogre.Tutorials
         protected static float mTimer = 50;
         protected static SceneManager mSceneMgr;
         protected static Camera mCamera;
-        protected static CameraMan mCameraMan;
+        //protected static CameraMan mCameraMan;
 
         protected static MOIS.InputManager mInputMgr;
         protected static MOIS.Keyboard mKeyboard;
@@ -120,7 +120,7 @@ namespace Mogre.Tutorials
             //mCamera.Yaw(new Degree(45));
             //mCamera.NearClipDistance = 100;
             //mCamera.FarClipDistance = 500;
-            mCameraMan = new CameraMan(mCamera);
+            //mCameraMan = new CameraMan(mCamera);
 
 
 
