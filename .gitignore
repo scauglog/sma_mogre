@@ -10,6 +10,7 @@ Mogre.TutorialFramework-CS-2010.zip
 *.user
 *git .docstates
 *.log
+*.pdf
 
 # Build results
 [Dd]ebug/
