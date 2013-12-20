@@ -1,3 +1,52 @@
-\chapter*{Choix Technique}
-\addcontentsline{toc}{chapter}{Choix Technique}
+\section{Choix Technique}
 \thispagestyle{fancy}
+
+\subsection{Structure du code}
+Les différentes classes composants notre code:
+\begin{itemize}
+\item tutorials est une classe que nous avons créé et qui contiens les
+  fonctions de mogre permettant notamment d'intitialiser les caméras,
+  le clavier...
+\item environnement est la classe qui gère notre monde, elle instancie
+  le terrain, les pierres, les premieres entités, les lumières...
+\item character est une classe abstraite qui sert de base pour nos
+  agents.
+\item ninja est évidemment la classe gérant les ninjas, elle est
+  autonome, a l'exception des demandes de position qu'elle effectue à
+  l'environnement.
+\item robot Fait la même chose que ninja mais pour les robots.
+\item stone est la classe qui permet de gérer les pierres. 
+\end{itemize}
+
+\subsection{principaux attributs des agents}
+
+Les agents possèdent plusieurs attributs modifiables rapidement, Les
+deux suivants permettent de configurer les simulations:
+
+\begin{description}
+\item[Le champs de vision :] Le champs de visions peut-être modifié
+  facilement grâce a deux attributs, maxView et viewinAngle qui gèrent
+  respectivement la distance maximale d'un point pouvant être vu par
+  l'agent et l'angle entre le vecteur de la direction et la limite du
+  cone de son champs de vision.
+\item[vitesse :] On peut modifier la vitesse des personnage de deux
+  façons. Si on veut accelerer la vitesse du monde, on modifie
+  l'attribut de character mWalSkpeed qui agit sur les classe
+  d'agent. Si l'on souhaite modifier la vitesse d'un agent par rapport
+  à l'autre, il suffit de modifier l'attribut walkSpeedFactor d'un
+  agent.
+\end{description}
+
+\subsection{Aléatoire}
+Les mouvements aléatoire sont produits en générant deux nombres
+aléatoires, qui sont limité pour que l'agent ne puissent pas recevoir
+de position à atteindre qui soit hors du terrain.  On utilise
+également des nombres aléatoires pour les positions de départs des
+agents.
+
+\subsection{limites du terrain}
+
+Une méthode "outOfGround" permet à un agent d'interroger
+l'environnement pour savoir s'il va sortir du terrain, ce qui n'est
+pas sencé arrivé. Dans le cas contraire, il est renvoyé vers une autre
+positions a l'interieurs du terrain.
