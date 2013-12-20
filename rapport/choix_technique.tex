@@ -11,10 +11,10 @@ Les différentes classes composants notre code:
   le terrain, les pierres, les premières entités, les lumières...
 \item character est une classe abstraite qui sert de base pour nos
   agents.
-\item ninja est évidemment la classe gérant les ninjas, elle est
-  autonome, a l'exception des demandes de position qu'elle effectue à
-  l'environnement.
-\item robot Fait la même chose que ninja mais pour les robots.
+\item ninja est évidemment la classe gérant les ninjas, elle hérite de
+  la classe character, elle est autonome, a l'exception des demandes
+  de position qu'elle effectue à l'environnement.
+\item robot hérite également de character et fait la même chose que ninja mais pour les robots.
 \item stone est la classe qui permet de gérer les pierres. 
 \end{itemize}
 
@@ -52,3 +52,7 @@ Une méthode "outOfGround" permet à un agent d'interroger
 l'environnement pour savoir s'il va sortir du terrain, ce qui n'est
 pas sensé arrivé. Dans le cas contraire, il est renvoyé vers une autre
 positions a l'interieurs du terrain.
+
+\subsection{environnement}
+La classe environnement initialise le monde et sais tout. Elle a la liste des 
+agents, des pierres, connait leur positions. c'est cette classe qui determine à quelles informations sur le monde les agents ont accès.
