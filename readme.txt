@@ -1,4 +1,4 @@
-Notice d'installation
+﻿Notice d'installation
 
 ouvrir le fichier solution visual studio "tutorial.sln" avec visual studio
 Exécuter la solution (F5)
@@ -28,6 +28,10 @@ F=supprimer un ninja
 R=ajouter un ninja
 Y=supprimer un robot
 H=ajouter un robot
+
+Modification du temps
+W = accélération de la simulation
+X = ralentissement de la simulation
 
 Arrêt de la simulation
 Alt+F4
