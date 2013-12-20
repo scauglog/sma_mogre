@@ -30,7 +30,9 @@ namespace Mogre.Tutorials
         public static float MWalkSpeed
         {
             get { return Character.mWalkSpeed; }
-            set { Character.mWalkSpeed = value; }
+            set { if(value>=0)
+                    Character.mWalkSpeed = value;
+                }
         }
         public SceneNode Node
         {

@@ -160,7 +160,7 @@ namespace Mogre.Tutorials
                 mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;
                 mDistance = mDirection.Normalise();
-                float move = (MWalkSpeed*walkSpeedFactor) * evt.timeSinceLastFrame;
+                float move = MWalkSpeed * evt.timeSinceLastFrame;
                 mDistance -= move;
 
                 if (mDistance <= 0.2f)
@@ -203,7 +203,7 @@ namespace Mogre.Tutorials
                     Node.Translate(mDirection * move);
                 }
                 //Update the Animation State.
-                mAnimationState.AddTime(evt.timeSinceLastFrame * (MWalkSpeed*walkSpeedFactor) / 20);
+                mAnimationState.AddTime(evt.timeSinceLastFrame * MWalkSpeed / 20);
             }
             else if (stoneTarget == null)
             {
@@ -217,7 +217,7 @@ namespace Mogre.Tutorials
                 mDestination = mWalkList.First.Value;
                 mDirection = mDestination - Node.Position;
                 mDistance = mDirection.Normalise();
-                float move = (MWalkSpeed*walkSpeedFactor) * evt.timeSinceLastFrame;
+                float move = MWalkSpeed * evt.timeSinceLastFrame;
                 mDistance -= move;
                 mWalking = true;
 
@@ -252,7 +252,7 @@ namespace Mogre.Tutorials
                     Node.Translate(mDirection * move);
                 }
                 //Update the Animation State.
-                mAnimationState.AddTime(evt.timeSinceLastFrame * (MWalkSpeed*walkSpeedFactor) / 20);
+                mAnimationState.AddTime(evt.timeSinceLastFrame * MWalkSpeed / 20);
             }
         }
     }
