@@ -14,20 +14,31 @@ namespace Mogre.Tutorials
         protected String name;
         protected String state;
         protected static int count=1;
+        private bool isCarried;
+
+        public bool IsCarried
+        {
+            get { return isCarried; }
+            set { isCarried = value; }
+        }
         public SceneNode Node
         {
             get { return node; }
+        }
+        public String Name
+        {
+            get { return name; }
         }
 
 
         public Stone(ref SceneManager mSceneMgr, Vector3 position)
         {
             name = count.ToString();
-            ent = mSceneMgr.CreateEntity("OgreHead" + name, "ogrehead.mesh");
+            ent = mSceneMgr.CreateEntity("stone"+name, "ogrehead.mesh");
             ent.CastShadows = true;
-            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("OgreHeadNode" + name);
+            isCarried = false;
+            node = mSceneMgr.RootSceneNode.CreateChildSceneNode("stoneNode"+name);
             node.AttachObject(ent);
-            name = count.ToString();
             node.Position = position;
             node.Scale(0.35f, 0.35f, 0.35f);
             count++;

@@ -75,6 +75,7 @@ namespace Mogre.Tutorials
                     minDist = dist;
                     position = c.Node.Position;
                     stoneTarget = c;
+                    carriedStoneName = c.Name;
                 }
 
             }
@@ -110,6 +111,7 @@ namespace Mogre.Tutorials
                 mAnimationState.Enabled = true;
                 mWalking = true;
             }
+            #region has a stone target
             if (stoneTarget != null)
             {
                 //mWalking = false;
@@ -134,6 +136,7 @@ namespace Mogre.Tutorials
                     mWalkList.RemoveFirst();
                     mWalkList.AddFirst(castle);
                     this.state = "stone";
+                    env.setCarriedStone(carriedStoneName);
                 }
                 if (env.outOfGround(Node.Position))
                 {
@@ -164,6 +167,8 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * (MWalkSpeed*walkSpeedFactor) / 20);
             }
+            #endregion
+            #region carry a stone
             else if (state == "stone")
             {
                 mDestination = mWalkList.First.Value;
@@ -181,12 +186,12 @@ namespace Mogre.Tutorials
                     mWalking = false;
                     try
                     {
-                        Node temp = node.GetChild(0);
+                        Node temp = node.GetChild("stoneNode"+carriedStoneName);
                         //node.RemoveChild(0);
                         node.RemoveAllChildren();
                         node.Parent.AddChild(temp);
                         temp.Position = node.Position;
-
+                        env.setUncarriedStone(carriedStoneName);
                     }
                     catch
                     {
@@ -196,7 +201,6 @@ namespace Mogre.Tutorials
                 }
                 if (env.outOfGround(Node.Position))
                 {
-
                     //set our node to the destination we've just reached & reset direction to 0
                     Node.Position = lastPosition;
                     mDirection = Vector3.ZERO;
@@ -223,6 +227,8 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * MWalkSpeed / 20);
             }
+            #endregion
+            #region no stone targeted
             else if (stoneTarget == null)
             {
                 if (mWalkList.Count == 0)
@@ -272,6 +278,7 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * MWalkSpeed / 20);
             }
+            #endregion
         }
     }
 }

@@ -58,22 +58,13 @@ namespace Mogre.Tutorials
                         minDist = dist;
                         position = c.Node.Position;
                         stoneTarget = c;
+                        carriedStoneName = c.Name;
                     }
 
                 }
 
             
             }   
-            //foreach (Character c in listchar)
-            //{
-            //    double dist = (c.Node.Position - this.Node.Position).Length;
-            //    if (minDist > dist)
-            //    {
-            //        minDist = dist;
-            //        position = c.Node.Position;
-            //    }
-
-            //}
              
             if (position!=Vector3.ZERO)
             {
@@ -86,65 +77,7 @@ namespace Mogre.Tutorials
             return stoneTarget;
         }
 
-    //    public override void move(FrameEvent evt, Environment env)
-    //    {
-    //        if (!mWalking)
-    //        {
-    //            mAnimationState = ent.GetAnimationState("Walk");
-    //            mAnimationState.Loop = true;
-    //            mAnimationState.Enabled = true;
-    //            mWalking = true;
-    //            findTarget(env);
-    //        }
-    //        if (findTarget(env))
-    //        {
-    //            mDestination = mWalkList.First.Value;
-    //            mDirection = mDestination - Node.Position;
-    //            mDistance = mDirection.Normalise();
-    //            float move = mWalkSpeed * evt.timeSinceLastFrame;
-    //            mDistance -= move;
-
-    //            if (mDistance <= 0.2f)
-    //            {
-    //                mAnimationState = ent.GetAnimationState("Shoot");
-    //            }
-    //            if (env.outOfGround(Node.Position))
-    //            {
-
-    //                //set our node to the destination we've just reached & reset direction to 0
-    //                Node.Position = lastPosition;
-    //                mDirection = Vector3.ZERO;
-    //                mWalking = false;
-
-    //            }
-    //            else
-    //            {
-    //                lastPosition = Node.Position;
-    //                //Rotation code goes here
-    //                Vector3 src = Node.Orientation * forward;
-    //                if ((1.0f + src.DotProduct(mDirection)) < 0.0001f)
-    //                {
-    //                    Node.Yaw(180.0f);
-    //                }
-    //                else
-    //                {
-    //                    Quaternion quat = src.GetRotationTo(mDirection);
-    //                    Node.Rotate(quat);
-    //                }
-    //                //movement code goes here
-    //                Node.Translate(mDirection * move);
-    //            }
-    //            //Update the Animation State.
-    //            mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
-    //        }
-    //        else
-    //        {
-    //            Node.Position = lastPosition;
-    //            mDirection = Vector3.ZERO;
-    //            mWalking = false;
-    //        }
-    //    }
-    //}
+   
          public override void move(FrameEvent evt, Environment env)
         {
             Stone stoneTarget = null;
@@ -159,6 +92,7 @@ namespace Mogre.Tutorials
                 mAnimationState.Enabled = true;
                 mWalking = true;
             }
+            #region has a stone target
             if (stoneTarget != null)
             {
                 //mWalking = false;
@@ -181,6 +115,7 @@ namespace Mogre.Tutorials
                     stoneTarget.Node.Position = new Vector3(0, 100, 0);
                     mWalkList.RemoveFirst();
                     returnPosition = node.Position;
+                    env.setCarriedStone(carriedStoneName);
                     this.state = "stone";
                 }
                 if (env.outOfGround(Node.Position))
@@ -212,6 +147,8 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * (MWalkSpeed*walkSpeedFactor) / 20);
             }
+            #endregion
+            #region return to position after drop stone
             else if (state == "returnposition")
             {
                 if(mWalkList.Count==0)
@@ -262,6 +199,8 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * (MWalkSpeed*walkSpeedFactor) / 20);
             }
+            #endregion
+            #region carry a stone
             else if (state == "stone")
             {
                 if (mWalkList.Count == 0)
@@ -288,13 +227,13 @@ namespace Mogre.Tutorials
                     
                     try
                     {
-                        Node temp = node.GetChild(0);
+                        Node temp = node.GetChild("stoneNode"+carriedStoneName);
                         node.GetChildIterator();
                         //node.RemoveChild(0);
                         node.RemoveAllChildren();
                         node.Parent.AddChild(temp);
                         temp.Position = node.Position;
-
+                        env.setUncarriedStone(carriedStoneName);
                     }
                     catch { 
                     
@@ -333,6 +272,8 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * (MWalkSpeed*walkSpeedFactor) / 20);
             }
+            #endregion
+            #region no stone targeted
             else if (stoneTarget == null)
             {
                 if (mWalkList.Count == 0)
@@ -382,6 +323,7 @@ namespace Mogre.Tutorials
                 //Update the Animation State.
                 mAnimationState.AddTime(evt.timeSinceLastFrame * (MWalkSpeed*walkSpeedFactor) / 20);
             }
+            #endregion
         }
     }
 }

@@ -26,6 +26,7 @@ namespace Mogre.Tutorials
         protected int maxView;
         protected String state;
         protected float walkSpeedFactor;
+        protected String carriedStoneName;
 
         public static float MWalkSpeed
         {

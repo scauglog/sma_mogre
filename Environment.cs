@@ -170,7 +170,7 @@ namespace Mogre.Tutorials
                 double vw = Math.Cos(lookingCharacter.ViewingAngle) * lookDir.Length * targetDir.Length;
                 double dist = (target.Node.Position - lookingCharacter.Node.Position).Length;
                 
-                if (lookDir.DotProduct(targetDir) > vw && dist<lookingCharacter.MaxView)
+                if (lookDir.DotProduct(targetDir) > vw && dist<lookingCharacter.MaxView && !target.IsCarried)
                 {
                     seenStone.Add(target);
                 }
@@ -219,14 +219,26 @@ namespace Mogre.Tutorials
             removeCharacter(ref mSceneMgr,ref c);
         }
 
-        public void removeStone(ref Stone s)
+        public void setCarriedStone(String stoneName)
         {
-            stones.Remove(s);
+            foreach (Stone s in stones)
+            {
+                if (s.Name == stoneName)
+                {
+                    s.IsCarried = true;
+                }
+            }
         }
 
-        public void addStone(ref Stone s)
+        public void setUncarriedStone(String stoneName)
         {
-            stones.Add(s);
+            foreach (Stone s in stones)
+            {
+                if (s.Name == stoneName)
+                {
+                    s.IsCarried = false;
+                }
+            }
         }
     }
 }
